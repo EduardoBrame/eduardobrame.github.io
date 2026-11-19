@@ -6,7 +6,7 @@
 <script>try{var t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css"></head><body>
+<link rel="stylesheet" href="assets/style.css?v=5"></head><body>
 <a class="skip" href="#projetos">Pular para projetos</a>
 <nav><div class="wrap"><a class="me" href="#">Eduardo Bramé</a><a href="#projetos">Projetos</a><a href="#sobre">Sobre</a><a href="#sistema">Arquitetura</a><a class="ct" href="#contato">Contato</a><button id="tema" aria-label="Alternar tema claro/escuro">◐</button></div></nav>
 
@@ -36,77 +36,71 @@
  <article class="card dirigi vitrine rv" id="raiox">
   <div>
    <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">ML + LLM · time de 4</span>
-   <h3>Raio-X Comercial</h3>
+   <h3><a href="projetos/raio-x.html">Raio-X Comercial</a></h3>
    <p class="res">Prepara a primeira reunião de um vendedor B2B com uma grande empresa: lê os balanços públicos, acha o perfil e as empresas parecidas e escreve o briefing. O LLM escreve o texto, mas não pode escrever nenhum número.</p>
    <div class="nums"><div><b>595</b>empresas</div><div><b>384 mil</b>linhas</div><div><b>k = 4</b>silhueta corrigida</div></div>
+   <div class="chain" aria-label="Pipeline do Raio-X"><span>CVM</span><i>→</i><span>PostgreSQL</span><i>→</i><span>K-means</span><i>→</i><span class="ia">LLM com marcadores</span><i>→</i><span class="ok">Validador</span></div>
    <div class="tags"><span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">scikit-learn</span><span class="tag">LangChain</span></div>
-   <details><summary>Como foi feito</summary><dl>
-    <dt>Dados</dt><dd>DFP da CVM (dado aberto), de 2023 a 2025, carregados em PostgreSQL.</dd>
-    <dt>ML</dt><dd>K-means com k escolhido pela silhueta e os 5 vizinhos mais próximos. A silhueta de 0,77 era enganosa (567 das 595 empresas caíam num grupo só); troquei para k = 4, com 0,29 e grupos úteis.</dd>
-    <dt>IA sob controle</dt><dd>O LLM gera o texto com saída estruturada e marcadores no lugar dos números. Um validador confere e o código insere os valores reais.</dd>
-    <dt>Custo e testes</dt><dd>Cerca de US$ 0,0008 por relatório, com 259 testes no projeto do time. Streamlit na interface e Docker na entrega.</dd></dl>
-    <p class="nota">Projeto final do programa de formação da TCS. Minha parte foi o ML, a camada de IA, o validador e a avaliação, escritos com Claude Code sob a minha direção e revisão. O repositório é privado do time.</p></details>
+   <a class="mais" href="projetos/raio-x.html">Ver o projeto completo →</a>
+   
   </div>
-  <div class="pipe" aria-label="Pipeline do Raio-X">
-   <span>Balanços da CVM <small>dado aberto</small></span><i>↓</i>
-   <span>PostgreSQL <small>limpeza e modelagem</small></span><i>↓</i>
-   <span>K-means + vizinhos <small>perfil e parecidas</small></span><i>↓</i>
-   <span class="ia">LLM com marcadores <small>texto, sem números</small></span><i>↓</i>
-   <span class="ok">Validador <small>o código insere os números</small></span>
-  </div>
+  <div><a class="thumb" href="projetos/raio-x.html"><img src="assets/img/raiox-thumb.jpg" alt="Tela de teste do Raio-X Comercial" loading="lazy"></a>
+   </div>
  </article>
 
  <article class="card fiz rv">
+  <a class="thumb" href="projetos/bike-store.html" tabindex="-1" aria-hidden="true"><img src="assets/img/bike-modelo.jpg" alt="" loading="lazy"></a>
   <span class="papel p-fiz">Fiz</span><span class="cat">SQL e modelagem</span>
-  <h3>Bike Store: do caos no banco ao modelo estrela</h3>
+  <h3><a href="projetos/bike-store.html">Bike Store: do caos no banco ao modelo estrela</a></h3>
   <p class="res">Encoding corrompido, NULL na hierarquia e "n/a" contando como dado. Sem permissão de escrita, limpei tudo em views SQL, sem tocar na origem.</p>
   <div class="nums"><div><b>~60 mil</b>vendas</div><div><b>18,4 mil</b>clientes</div><div><b>95%</b>do lucro em bikes</div></div>
   <div class="tags"><span class="tag">PostgreSQL</span><span class="tag">SQL</span><span class="tag">Star Schema</span></div>
-  <details><summary>Como foi feito</summary><dl>
-   <dt>Técnicas</dt><dd>REPLACE encadeado (encoding), CTE + COALESCE + UNION ALL (hierarquia), NULLIF ("n/a") e checagem de comprimento (datas vazias).</dd>
-   <dt>Achado</dt><dd>Acessórios têm 63% de margem, contra 39% das bicicletas: o cross-sell sobe a margem sem subir o volume.</dd></dl>
-   <p><a href="https://github.com/EduardoBrame/bike-store-sql">Código SQL no GitHub</a> · <a href="https://medium.com/@galicianie/loja-de-bicicletas-analytics-do-caos-no-banco-de-dados-a-um-dashboard-de-neg%C3%B3cio-com-sql-e-power-eddb010e2efd">Artigo no Medium</a></p></details>
+  <a class="mais" href="projetos/bike-store.html">Ver o projeto completo →</a>
+  
  </article>
 
  <article class="card dirigi rv">
+  <a class="thumb" href="projetos/arvore-segura.html" tabindex="-1" aria-hidden="true"><img src="assets/img/arvore-thumb.jpg" alt="" loading="lazy"></a>
   <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">Ingestão e geo</span>
-  <h3>Árvore Segura Londrina</h3>
+  <h3><a href="projetos/arvore-segura.html">Árvore Segura Londrina</a></h3>
   <p class="res">Diz à Defesa Civil quais árvores de rua vistoriar primeiro, cruzando o inventário público da prefeitura com vento e fiação.</p>
   <div class="nums"><div><b>41 mil</b>registros</div><div><b>28,7 mil</b>árvores avaliadas</div><div><b>2.197</b>risco alto</div></div>
   <div class="tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">ArcGIS REST</span><span class="tag">shapely</span></div>
-  <details><summary>Como foi feito</summary><dl>
-   <dt>Ingestão</dt><dd>A API devolve até 2.000 registros por vez, então a coleta pagina com offset. Os 12,4 mil registros de covas vazias e tocos saem por uma regra explícita.</dd>
-   <dt>Nota de risco</dt><dd>Defeitos × porte + fiação, uma simplificação do método ISA TRAQ, num mapa que funciona offline.</dd>
-   <dt>Próximo passo</dt><dd>DAG agendada com retry e checkpoint do offset, checagem de contagem e de nulos e carga incremental.</dd></dl>
-   <p class="nota">Protótipo de hackathon: os pesos ainda não foram calibrados com um técnico e o inventário é de 2018.</p></details>
+  <a class="mais" href="projetos/arvore-segura.html">Ver o projeto completo →</a>
+  
  </article>
 
  <article class="card dirigi rv">
+  <a class="thumb" href="projetos/cerebro.html" tabindex="-1" aria-hidden="true"><img src="assets/img/cerebro-thumb.jpg" alt="" loading="lazy"></a>
   <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">Infra e agentes</span>
-  <h3>Cérebro: assistente 24 h na Azure</h3>
+  <h3><a href="projetos/cerebro.html">Cérebro: assistente 24 h na Azure</a></h3>
   <p class="res">Um assistente no WhatsApp que escolhe o modelo pela dificuldade do pedido, usa as minhas ferramentas e pede confirmação antes de qualquer ação irreversível.</p>
   <div class="nums"><div><b>4</b>níveis de modelo</div><div><b>3</b>provedores com failover</div><div><b>12</b>achados de segurança corrigidos</div></div>
   <div class="tags"><span class="tag">Azure</span><span class="tag">Linux</span><span class="tag">systemd</span><span class="tag">Python</span></div>
-  <details><summary>Como foi feito</summary><p>Ver a <a href="#sistema">arquitetura e as decisões</a> logo abaixo.</p></details>
+  <a class="mais" href="projetos/cerebro.html">Ver o projeto completo →</a>
+  
  </article>
 
  <article class="card fiz rv">
+  <a class="thumb" href="projetos/varejo.html" tabindex="-1" aria-hidden="true"><img src="assets/img/varejo-merge.jpg" alt="" loading="lazy"></a>
   <span class="papel p-fiz">Fiz</span><span class="cat">ETL e qualidade</span>
-  <h3>Varejo: regra explícita para cada sujeira</h3>
+  <h3><a href="projetos/varejo.html">Varejo: regra explícita para cada sujeira</a></h3>
   <p class="res">Preço nulo, linhas fantasmas e produtos sem nome: cada caso tratado com uma regra explícita antes de modelar.</p>
   <div class="nums"><div><b>628</b>linhas salvas</div><div><b>600+</b>nomes recuperados</div><div><b>604</b>fantasmas fora</div></div>
   <div class="tags"><span class="tag">ETL</span><span class="tag">Star Schema</span><span class="tag">estatística</span></div>
-  <details><summary>Como foi feito</summary><dl>
-   <dt>Técnicas</dt><dd>Preço = total ÷ quantidade, chave composta categoria + preço, calendário dimensional e outliers fora do ticket médio com μ±2σ (com ±3σ nada mudava).</dd></dl></details>
+  <a class="mais" href="projetos/varejo.html">Ver o projeto completo →</a>
+  
  </article>
 
  <article class="card fiz rv">
+  <a class="thumb" href="projetos/drina.html" tabindex="-1" aria-hidden="true"><img src="assets/img/drina-produto.jpg" alt="" loading="lazy"></a>
   <span class="papel p-fiz">Fiz</span><span class="cat">Produto e pitch · time de 5</span>
-  <h3>DRINA: 3º lugar no SmartCities Hackathon</h3>
+  <h3><a href="projetos/drina.html">DRINA: 3º lugar no SmartCities Hackathon</a></h3>
   <p class="res">Atendimento da prefeitura dentro do WhatsApp, para quem não vai baixar oito aplicativos. Fiz o pitch, o briefing e os scripts que geram as imagens.</p>
   <div class="nums"><div><b>3º</b>lugar</div><div><b>13/20</b>acertos do classificador por regras</div></div>
   <div class="tags"><span class="tag">produto</span><span class="tag">privacidade</span><span class="tag">classificação</span></div>
-  <details><summary>Como foi feito</summary><p>Junto veio o Onde Resolvo: o morador descreve o problema com as próprias palavras, o texto perde CPF, telefone e e-mail, e um classificador indica um entre 20 serviços. O mapa do briefing reaproveita os dados do Árvore Segura.</p></details>
+  <a class="mais" href="projetos/drina.html">Ver o projeto completo →</a>
+  
  </article>
  </div>
 </section>

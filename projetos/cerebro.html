@@ -1,0 +1,53 @@
+<!doctype html><html lang="pt-BR" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cérebro: assistente 24 h na Azure · Eduardo Bramé</title><meta name="description" content="Um assistente no WhatsApp que escolhe o modelo de IA pela dificuldade do pedido, usa as minhas ferramentas e pede confirmação antes de qualquer ação irreversível. Roda numa VM Linux sem porta de administração aberta."><meta property="og:image" content="https://eduardobrame.github.io/assets/img/arvore-thumb.jpg">
+<script>try{var t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/style.css?v=5"></head><body>
+<nav><div class="wrap"><a class="me" href="../">Eduardo Bramé</a><a href="../#projetos">Projetos</a><a class="ct" href="../#contato">Contato</a><button id="tema" aria-label="Alternar tema claro/escuro">◐</button></div></nav><main class="wrap">
+<a class="crumb" href="../#projetos">← Todos os projetos</a><header class="phero card dirigi" style="background:none;border:0;box-shadow:none;padding-left:0;padding-right:0"><span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">Infra, agentes e custo</span><h1>Cérebro: assistente 24 h na Azure</h1><p class="lead">Um assistente no WhatsApp que escolhe o modelo de IA pela dificuldade do pedido, usa as minhas ferramentas e pede confirmação antes de qualquer ação irreversível. Roda numa VM Linux sem porta de administração aberta.</p>
+<div class="nums"><div><b>4</b>níveis de modelo</div><div><b>3</b>provedores com failover</div><div><b>12</b>achados de segurança corrigidos</div><div><b>2 min</b>sync da memória</div></div>
+<div class="tags"><span class="tag">Azure</span><span class="tag">Linux</span><span class="tag">systemd</span><span class="tag">Caddy</span><span class="tag">Tailscale</span><span class="tag">Python</span><span class="tag">Git</span></div></header>
+<section class="bloco"><h2>O problema</h2><div><p>Eu queria usar IA no dia a dia sem abrir arquivos, sem pagar modelo caro para pergunta simples e sem deixar a IA fazer algo irreversível sozinha.</p></div></section>
+<section class="bloco" id="sistema" style="display:block"><h2>Arquitetura</h2><p class="sub" style="margin-top:8px">Passe o mouse nos passos para ver onde cada um acontece.</p><div class="arch">
+  <div class="zona"><small>Quem usa</small>
+   <div class="node" data-step="1"><b>WhatsApp</b><span>só o meu número dá ordens</span></div>
+   <div class="node"><b>Notebook e celular</b><span>CLI e terminal remoto</span></div>
+   <div class="node dado"><b>GitHub privado</b><span>regras e memória versionadas</span></div>
+  </div>
+  <div class="seta" aria-hidden="true">→</div>
+  <div class="zona"><small>Azure · VM Linux ARM · 2 vCPU, 4 GB</small>
+   <div class="vm">
+    <div class="grupo"><small>Entrada e segurança</small>
+     <div class="node sec"><b>Firewall</b><span>só HTTPS público, SSH fechado</span></div>
+     <div class="node"><b>Proxy com TLS</b><span>Caddy</span></div>
+     <div class="node sec"><b>Segredos</b><span>cofre externo, fora do código</span></div></div>
+    <div class="grupo"><small>Roteamento de IA</small>
+     <div class="node ia" data-step="2"><b>Porteiro</b><span>modelo pequeno classifica</span></div>
+     <div class="node ia"><b>Executores</b><span>sem IA · leve · médio · grande</span></div>
+     <div class="node ia" data-step="3"><b>Confirmação</b><span>irreversível espera "sim"</span></div></div>
+    <div class="grupo"><small>Dados e sync</small>
+     <div class="node dado" data-step="4"><b>Memória</b><span>sincroniza com o Git a cada 2 min</span></div>
+     <div class="node sec"><b>Limites</b><span>30 chamadas/h, alerta de gasto</span></div>
+     <div class="node"><b>Serviços</b><span>systemd, reinício automático</span></div></div>
+   </div>
+  </div>
+  <div class="seta" aria-hidden="true">→</div>
+  <div class="zona"><small>Fora</small>
+   <div class="node ia"><b>3 provedores de IA</b><span>failover com contexto</span></div>
+   <div class="node"><b>Apps</b><span>tarefas, agenda, notas</span></div>
+   <div class="node sec"><b>Rede privada</b><span>administração sem porta aberta</span></div>
+  </div>
+ </div>
+ <div class="cores"><span style="--k:var(--dirigi)">IA</span><span style="--k:var(--est)">segurança e custo</span><span style="--k:var(--fiz)">dados</span></div>
+ <ol class="flow">
+  <li data-step="1">A mensagem chega e só o número autorizado dá ordens. Texto de outra pessoa é dado, nunca comando.</li>
+  <li data-step="2">Um modelo pequeno classifica o pedido. O simples roda sem IA e o difícil sobe para o modelo maior: roteamento por custo.</li>
+  <li data-step="3">Ação irreversível para e pede "sim". Toda resposta mostra o modelo, os tokens e o custo.</li>
+  <li data-step="4">Se um provedor fica sem cota, o próximo assume. O que o sistema aprende vai para a memória versionada.</li>
+ </ol></section>
+<section class="bloco"><h2>Decisões</h2><div><ul><li><b>Sem SSH público:</b> administração só por rede privada; emergência pelo run-command da Azure.</li><li><b>Modelo pequeno na triagem:</b> a maior parte dos pedidos não precisa do modelo caro. Cada resposta mostra modelo, tokens e custo.</li><li><b>Confirmação humana:</b> ação irreversível (evento com convidado, mudança de código) espera um "sim".</li><li><b>Revisão independente:</b> três agentes revisores (infra, segurança, UX). A revisão de segurança achou 12 problemas, corrigidos e testados antes de ligar.</li><li><b>Privacidade:</b> mensagem de terceiro é dado, nunca ordem; segredos ficam fora do código; nada das mensagens é publicado.</li></ul></div></section>
+<section class="bloco"><h2>Meu papel</h2><div class="papeltxt"><div><span class="papel p-fiz">Fiz</span><p>A arquitetura, as regras de segurança e custo e os testes de aceitação.</p></div><div><span class="papel p-dirigi">Dirigi IA e validei</span><p>A implementação (Python, systemd, configuração da VM) foi feita com agentes de IA sob a minha direção.</p></div></div></section>
+<section class="bloco"><h2>O que falta</h2><div><p>A infra foi criada pelo az CLI, não por Terraform; não há CI/CD nem alerta de queda; é uma VM só, em uma região; o failover foi testado em simulação. São exatamente os meus próximos 30 dias de estudo.</p></div></section>
+<div class="prox"><a href="arvore-segura.html">← Anterior<b>Árvore Segura Londrina</b></a><a href="varejo.html" style="text-align:right">Próximo →<b>Varejo: uma regra explícita para cada sujeira</b></a></div>
+</main><footer><div class="wrap">Eduardo Bramé · Londrina-PR · 2026</div></footer>
+<script>document.getElementById('tema').onclick=function(){var r=document.documentElement,n=r.dataset.theme==='light'?'dark':'light';r.dataset.theme=n;try{localStorage.setItem('tema',n)}catch(e){}};</script></body></html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onde Resolvo Londrina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: faixa de contexto, três abas (pedir, painel, teste) numa coluna de leitura de até 980px. */
+:root {
+  --bg: #F4F6F9;
+  --panel: #FFFFFF;
+  --ink: #142235;
+  --muted: #586579;
+  --line: #DCE2EA;
+  --accent: #1557A6;
+  --accent-ink: #FFFFFF;
+  --soft: #E8F0FA;
+  --ok: #1E7B4D;
+  --ok-bg: #E4F4EC;
+  --warn: #8A5300;
+  --warn-bg: #FFF2DC;
+  --bad: #B3261E;
+  --bad-bg: #FDE8E6;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1520; --panel: #142030; --ink: #E6EDF6; --muted: #9AA8BB; --line: #243347; --accent: #6FA8EE; --accent-ink: #0D1520;
+    --soft: #1A2D45; --ok: #6FD3A0; --ok-bg: #133325; --warn: #FFC56B; --warn-bg: #3A2A10; --bad: #FF8A80; --bad-bg: #3B1A18; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1520; --panel: #142030; --ink: #E6EDF6; --muted: #9AA8BB; --line: #243347; --accent: #6FA8EE; --accent-ink: #0D1520;
+  --soft: #1A2D45; --ok: #6FD3A0; --ok-bg: #133325; --warn: #FFC56B; --warn-bg: #3A2A10; --bad: #FF8A80; --bad-bg: #3B1A18; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+a { color: var(--accent); }
+button, textarea, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.topo { background: var(--panel); border-bottom: 1px solid var(--line); }
+.topo .in, main, .contexto .in { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+.topo .in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 14px; padding-bottom: 0; }
+.marca h1 { font-size: 24px; letter-spacing: -.01em; }
+.marca p { margin: 2px 0 12px; color: var(--muted); font-size: 14.5px; }
+nav { display: flex; gap: 4px; align-self: flex-end; }
+nav a { padding: 10px 14px; text-decoration: none; color: var(--muted); font-weight: 600; border-bottom: 3px solid transparent; }
+nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+.contexto { background: var(--soft); border-bottom: 1px solid var(--line); }
+.contexto .in { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 20px; padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
+.contexto b { display: block; font: 800 22px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.contexto .fonte { grid-column: 1 / -1; color: var(--muted); font-size: 12.5px; }
+
+main { padding-top: 22px; padding-bottom: 48px; }
+section[hidden] { display: none; }
+.cartao { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.pilha { display: grid; gap: 16px; }
+
+label.rot { font-weight: 600; display: block; margin-bottom: 6px; }
+textarea { width: 100%; min-height: 96px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); resize: vertical; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip { padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); font-size: 13.5px; cursor: pointer; }
+.chip:hover { border-color: var(--accent); }
+.acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 14px; }
+.btn { padding: 10px 18px; border-radius: 8px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 600; cursor: pointer; }
+.btn.sec { background: var(--panel); color: var(--accent); }
+.btn:disabled { opacity: .55; cursor: progress; }
+.ia { display: inline-flex; align-items: center; gap: 8px; font-size: 14.5px; }
+.status { font-size: 13px; color: var(--muted); }
+.privacidade { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+
+.res { display: grid; gap: 10px; border-left: 5px solid var(--c, var(--accent)); }
+.res .tipo { display: inline-flex; align-self: start; justify-self: start; padding: 3px 10px; border-radius: 999px; font-weight: 700; font-size: 13px; background: var(--cb); color: var(--c); }
+.res h3 { font-size: 21px; }
+.res dl { display: grid; grid-template-columns: 150px 1fr; gap: 6px 14px; margin: 0; font-size: 15px; }
+.res dt { color: var(--muted); }
+.res dd { margin: 0; }
+.res .meta { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.res .enviado { font-size: 13px; color: var(--muted); background: var(--bg); border-radius: 6px; padding: 8px 10px; }
+
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; border-top: 4px solid var(--c, var(--accent)); }
+.kpi b { display: block; font: 800 28px/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.kpi span { color: var(--muted); font-size: 13.5px; }
+.barras { display: grid; gap: 6px; }
+.barra { display: grid; grid-template-columns: 210px 1fr 40px; align-items: center; gap: 10px; font-size: 14px; }
+.barra .t { height: 12px; background: var(--bg); border-radius: 6px; overflow: hidden; }
+.barra .t i { display: block; height: 100%; background: var(--accent); border-radius: 6px; }
+.barra .n { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+.tabela { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 13px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+.tag.meu { background: var(--soft); color: var(--accent); border-color: transparent; }
+.tag.dup { background: var(--warn-bg); color: var(--warn); border-color: transparent; }
+.linha-acoes { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.cab2 { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 10px; }
+.cab2 h2 { font-size: 18px; }
+.cab2 p { margin: 0; color: var(--muted); font-size: 13.5px; }
+
+.placar { display: flex; flex-wrap: wrap; gap: 12px; }
+.placar .kpi { min-width: 220px; }
+.certo { color: var(--ok); font-weight: 600; }
+.errado { color: var(--bad); font-weight: 600; }
+details summary { cursor: pointer; font-weight: 600; }
+.rodape { color: var(--muted); font-size: 13px; }
+.rodape ul { padding-left: 18px; margin: 6px 0 0; display: grid; gap: 3px; }
+
+@media (max-width: 760px) {
+  .contexto .in { grid-template-columns: 1fr; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .res dl { grid-template-columns: 1fr; gap: 2px; }
+  .res dt { margin-top: 6px; }
+  .barra { grid-template-columns: 1fr 40px; }
+  .barra .t { grid-column: 1 / -1; grid-row: 2; }
+  nav { width: 100%; }
+  nav a { flex: 1; text-align: center; padding: 10px 6px; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="topo">
+  <div class="in">
+    <div class="marca">
+      <h1>Onde Resolvo · Londrina</h1>
+      <p>Escreva o problema do seu jeito. A gente diz onde resolver e entrega o chamado pronto para a prefeitura.</p>
+    </div>
+    <nav aria-label="Seções">
+      <a href="#pedir" data-aba="pedir">Fazer um pedido</a>
+      <a href="#painel" data-aba="painel">Painel da Ouvidoria</a>
+      <a href="#teste" data-aba="teste">Teste de qualidade</a>
+    </nav>
+  </div>
+</div>
+<div class="contexto">
+  <div class="in">
+    <div><b>8.177</b>manifestações na Ouvidoria em 2025, 22% a mais que em 2024</div>
+    <div><b>5</b>ouvidores para atender tudo isso, o mesmo número desde 2023</div>
+    <div><b>6.995</b>pessoas procuraram a Ouvidoria só para saber onde resolver algo</div>
+    <div class="fonte">Fonte: <a href="https://repositorio.londrina.pr.gov.br/index.php/menu-ouvidoria/dados-estatisticos/2025-40/73814-relatorio-de-gestao-2025-versao-final-1/file">Relatório de Gestão 2025 da Ouvidoria-Geral do Município de Londrina</a>, p. 10-19. Protótipo para o SmartCities Hackathon Londrina 2026.</div>
+  </div>
+</div>
+
+<main>
+  <!-- ABA 1: pedido do cidadão -->
+  <section id="aba-pedir" class="pilha">
+    <div class="cartao">
+      <label class="rot" for="texto">O que está acontecendo?</label>
+      <textarea id="texto" placeholder="Ex.: a lâmpada do poste da Rua Pará, 500, no Centro, está apagada faz uma semana"></textarea>
+      <div class="chips" id="exemplos" aria-label="Exemplos para testar"></div>
+      <div class="acoes">
+        <button class="btn" id="entender" type="button">Descobrir onde resolver</button>
+        <label class="ia" for="usar-ia"><input type="checkbox" id="usar-ia" disabled> Usar IA (Claude)</label>
+        <span class="status" id="status-ia">Verificando se a IA está disponível...</span>
+      </div>
+      <p class="privacidade">Antes de qualquer análise, o texto passa por um filtro que troca CPF, telefone e e-mail por [removido]. Seus pedidos ficam guardados só neste navegador.</p>
+    </div>
+    <div id="resultado"></div>
+  </section>
+
+  <!-- ABA 2: painel -->
+  <section id="aba-painel" class="pilha" hidden>
+    <div class="linha-acoes">
+      <label class="ia" for="mostrar-ex"><input type="checkbox" id="mostrar-ex" checked> Incluir pedidos de exemplo</label>
+      <button class="btn sec" id="limpar" type="button">Apagar meus pedidos deste navegador</button>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="cartao">
+      <div class="cab2"><h2>Pedidos por órgão</h2><p>Quem recebe cada pedido.</p></div>
+      <div class="barras" id="barras"></div>
+    </div>
+    <div class="cartao">
+      <div class="cab2"><h2>Chamados prontos para o Londrina ON</h2><p>Pedidos iguais do mesmo lugar viram um só, com o número de apoios.</p></div>
+      <div class="tabela"><table><thead><tr><th>Serviço</th><th>Bairro</th><th>Endereço</th><th class="num">Pedidos</th><th>Último</th><th>Origem</th></tr></thead><tbody id="tab-chamados"></tbody></table></div>
+    </div>
+    <div class="cartao">
+      <div class="cab2"><h2>Para um atendente</h2><p>Pedidos que a triagem não entendeu com segurança.</p></div>
+      <div class="tabela"><table><thead><tr><th>Pedido (sem dados pessoais)</th><th>Motivo</th><th>Origem</th></tr></thead><tbody id="tab-atendente"></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- ABA 3: teste -->
+  <section id="aba-teste" class="pilha" hidden>
+    <div class="cartao">
+      <div class="cab2"><h2>Quanto a triagem acerta?</h2><p>60 pedidos escritos como as pessoas falam, com o serviço certo marcado. As 40 primeiras ajudaram a montar as regras; a nota que vale é a das 20 frases novas.</p></div>
+      <div class="acoes" style="margin-top:0">
+        <button class="btn sec" id="testar-regras" type="button">Testar as regras simples</button>
+        <button class="btn" id="testar-ia" type="button" disabled>Testar com IA (1 chamada)</button>
+        <span class="status" id="status-teste"></span>
+      </div>
+    </div>
+    <div class="placar" id="placar"></div>
+    <div class="cartao" id="erros-cartao" hidden>
+      <div class="cab2"><h2>Onde errou</h2><p id="erros-legenda"></p></div>
+      <div class="tabela"><table><thead><tr><th>Pedido</th><th>Certo</th><th>Respondido</th></tr></thead><tbody id="tab-erros"></tbody></table></div>
+    </div>
+    <details class="cartao"><summary>Ver os 60 pedidos do teste</summary><div class="tabela"><table><tbody id="tab-teste"></tbody></table></div></details>
+  </section>
+
+  <div class="rodape cartao">
+    <b>De onde vêm as orientações</b>
+    <ul>
+      <li>Canais do Londrina ON (app, site londrinaon.com.br, WhatsApp e 156) e serviços de zeladoria: <a href="https://blog.londrina.pr.gov.br/?p=208589">Prefeitura, 11/03/2026</a> e <a href="https://blog.londrina.pr.gov.br/?p=243541">balanço de 25/09/2026</a>.</li>
+      <li>Clica e Confirma (fila da saúde): <a href="https://blog.londrina.pr.gov.br/?p=190591">Prefeitura, 30/04/2025</a>. UPA Digital: <a href="https://blog.londrina.pr.gov.br/?p=215496">Prefeitura, 17/06/2026</a>. Disque Dengue: <a href="https://blog.londrina.pr.gov.br/?p=242318">Prefeitura, 10/09/2026</a>.</li>
+      <li>Site falso de guias: <a href="https://www.bonde.com.br/bondenews/confira-as-principais-ameacas-digitais-de-junho-no-parana">Bonde, 07/07/2026</a>. Defesa Civil 199: <a href="https://www.folhadelondrina.com.br/cidades/vendaval-e-chuva-causam-78-destelhamentos-em-londrina-3327217e.html">Folha de Londrina, 30/08/2026</a>. App MOV do ônibus: <a href="https://www.folhadelondrina.com.br/geral/premiacao-reconhece-a-inovacao-e-qualidade-do-transporte-coletivo-de-londrina-3329136e.html">Folha, 05/11/2026</a>.</li>
+      <li>Ouvidoria, Central de Vagas, Cadastro Único e órgãos por assunto: Relatório de Gestão 2025 da Ouvidoria. Bairros: Lei 13.718 (geoportal da prefeitura). Árvores: <a href="https://claude.ai/artifact/Aq4AzhK6hCiWFMKaX4vE76">mapa Árvore Segura</a>.</li>
+      <li>Protótipo: o catálogo tem 20 serviços de demonstração. A versão real leria a Carta de Serviços inteira e abriria o chamado direto no Londrina ON.</li>
+    </ul>
+  </div>
+</main>
+
+<script>
+// ============ Catálogo de serviços (demonstração, com fonte) ============
+const LON = "Londrina ON: app, site londrinaon.com.br, WhatsApp ou telefone 156";
+const S = [
+  { id: "lampada_apagada", nome: "Lâmpada de poste apagada", orgao: "Londrina Iluminação", tipo: "chamado",
+    fazer: `${LON}. Serviço: lâmpada apagada.`, ref: "Mais de 90% resolvidos em até 5 dias úteis (CTD, 25/09/2026).",
+    p: ["lampada", "poste", "apagad", "escur", "sem luz", "iluminacao", "luz da rua", "queimad", "nenhuma luz"] },
+  { id: "lampada_dia", nome: "Lâmpada de poste acesa de dia", orgao: "Londrina Iluminação", tipo: "chamado",
+    fazer: `${LON}. Serviço: lâmpada acesa durante o dia.`, ref: "",
+    p: ["aceso o dia", "acesa o dia", "acesa de dia", "aceso de dia", "durante o dia", "dia inteiro", "desperdicio"] },
+  { id: "buraco", nome: "Buraco no asfalto", orgao: "Secretaria de Obras e Pavimentação", tipo: "chamado",
+    fazer: `${LON}. Serviço: tapa-buraco.`, ref: "Em 2026 foram mais de 1,2 mil pedidos de tapa-buraco no Londrina ON.",
+    p: ["buraco", "tapa buraco", "asfalto", "esburacad", "estourou o pneu"] },
+  { id: "afundamento", nome: "Afundamento ou cratera na rua", orgao: "Secretaria de Obras e Pavimentação", tipo: "chamado",
+    fazer: `${LON}. Serviço: manutenção de via urbana (afundamento).`, ref: "",
+    p: ["afund", "cratera", "cedeu", "desmoron"] },
+  { id: "mato", nome: "Mato alto em área pública", orgao: "CMTU", tipo: "chamado",
+    fazer: `${LON}. Serviço: capina e roçagem.`, ref: "",
+    p: ["mato", "capina", "rocagem", "rocada", "capim"] },
+  { id: "bueiro", nome: "Bueiro entupido ou sem tampa", orgao: "Encaminhado pelo Londrina ON", tipo: "chamado",
+    fazer: `${LON}. Serviços: desobstrução de bueiros ou reposição de tampa e grelha.`, ref: "",
+    p: ["bueiro", "boca de lobo", "galeria", "grelha", "tampa", "entupid", "desobstru"] },
+  { id: "semaforo", nome: "Semáforo com defeito", orgao: "CMTU", tipo: "chamado",
+    fazer: `${LON}. Área: trânsito (semáforo piscando, apagado ou com lâmpada queimada).`, ref: "",
+    p: ["semaforo", "sinaleiro", "farol", "sinal de transito", "piscando", "sinal quebrado"] },
+  { id: "coleta", nome: "Lixo não recolhido", orgao: "CMTU", tipo: "orientacao",
+    fazer: "A coleta é da CMTU. Se a falha se repetir, registre na Ouvidoria pelo WhatsApp (43) 3372-4530.", ref: "A coleta foi o assunto nº 1 da CMTU na Ouvidoria em 2025.",
+    p: ["lixo", "coleta", "caminhao do lixo", "reciclave", "entulho"] },
+  { id: "arvore", nome: "Árvore com risco ou pedido de poda", orgao: "Secretaria do Ambiente", tipo: "orientacao",
+    fazer: "Peça a avaliação à Secretaria do Ambiente: um técnico decide se poda ou remove. Se a árvore já caiu ou está caindo agora, ligue 199 (Defesa Civil).", ref: "Veja o risco das árvores do seu bairro no mapa Árvore Segura.", link: "https://claude.ai/artifact/Aq4AzhK6hCiWFMKaX4vE76",
+    p: ["arvore", "galho", "poda", "podar", "tronco", "cupim", "inclinad", "raiz"] },
+  { id: "emergencia", nome: "Emergência: queda, destelhamento ou alagamento", orgao: "Defesa Civil", tipo: "emergencia",
+    fazer: "Ligue agora para a Defesa Civil: 199. Com pessoa ferida, ligue também para os Bombeiros: 193.", ref: "",
+    p: ["caiu", "desab", "alagou", "enchente", "destelh", "telhado", "faisca", "fio caido", "arrancou", "vendaval", "entrou agua", "urgente", "risco de vida", "pegando fogo"] },
+  { id: "consulta", nome: "Consulta com especialista ou exame", orgao: "Secretaria Municipal de Saúde", tipo: "orientacao",
+    fazer: "No Clica e Confirma você vê sua posição na fila e confirma ou cancela a consulta. O link fica na página da Saúde e no Portal da Transparência; precisa do CPF e do nome da mãe.", ref: "Faltas em consultas marcadas ficam entre 25% e 30% (prefeitura, 30/04/2025).",
+    p: ["consulta", "especialista", "ortoped", "neurolog", "cardiolog", "ginecolog", "oftalmo", "dermatolog", "exame", "ultrassom", "raio x", "fila", "encaminhamento", "pelo sus"] },
+  { id: "sintoma", nome: "Sintoma leve (febre, gripe, dor leve)", orgao: "UPA Digital (Saúde)", tipo: "orientacao",
+    fazer: "Use a UPA Digital: consulta por vídeo 24 horas pelo app Londrina ON, para moradores com sintomas leves. Com falta de ar, sangramento ou dor forte, vá a uma UPA ou ligue 192 (SAMU).", ref: "Espera média de 15 minutos (julho de 2026).",
+    p: ["febre", "gripe", "tosse", "garganta", "dor de cabeca", "diarreia", "vomit", "resfri", "sintoma", "mal estar", "enjoo", "sem sair de casa"] },
+  { id: "dengue", nome: "Foco de dengue (água parada)", orgao: "Secretaria Municipal de Saúde", tipo: "orientacao",
+    fazer: "Ligue para o Disque Dengue: 0800-400-1893, para denunciar o foco ou agendar uma vistoria.", ref: "",
+    p: ["dengue", "mosquito", "agua parada", "criadouro", "aedes", "piscina abandonada"] },
+  { id: "iptu", nome: "IPTU, guias e boletos da prefeitura", orgao: "Secretaria Municipal de Fazenda", tipo: "orientacao",
+    fazer: "Emita guias só pelo site oficial londrina.pr.gov.br. O endereço prefeituradelondrina.org é falso e usado em golpe.", ref: "Alerta da Polícia Civil e da prefeitura (Bonde, 07/07/2026).",
+    p: ["iptu", "boleto", "guia", "carne", "imposto", "itbi", "segunda via", "divida ativa", "site estranho", "golpe"] },
+  { id: "cadunico", nome: "Cadastro Único e benefícios sociais", orgao: "Secretaria Municipal de Assistência Social", tipo: "orientacao",
+    fazer: "O Cadastro Único é feito pela Assistência Social. Leve os documentos de todas as pessoas da família.", ref: "Foram 167 reclamações sobre o Cadastro Único na Ouvidoria em 2025.",
+    p: ["cadastro unico", "cadunico", "bolsa familia", "beneficio", "cras", "auxilio", "assistencia social", "bpc"] },
+  { id: "vaga_cmei", nome: "Vaga em creche (CMEI)", orgao: "Secretaria Municipal de Educação · Central de Vagas", tipo: "orientacao",
+    fazer: "A vaga em creche é pedida na Central de Vagas da Secretaria de Educação.", ref: "",
+    p: ["creche", "cmei", "vaga", "educacao infantil", "matricula"] },
+  { id: "onibus", nome: "Ônibus: horário, linha ou ponto", orgao: "CMTU", tipo: "orientacao",
+    fazer: "Veja a previsão de chegada no app MOV. Reclamação de linha, horário ou ponto vai para a CMTU ou para a Ouvidoria.", ref: "",
+    p: ["onibus", "linha", "ponto de onibus", "terminal", "horario", "motorista", "lotado", "circular", "passagem", "tarifa"] },
+  { id: "moradia", nome: "Casa própria e cadastro habitacional", orgao: "Cohab-LD", tipo: "orientacao",
+    fazer: "O cadastro de quem espera moradia popular é feito na Cohab-LD.", ref: "Quase 60 mil pessoas estavam no cadastro em agosto de 2026.",
+    p: ["casa propria", "moradia", "cohab", "habitac", "minha casa minha vida", "apartamento popular"] },
+  { id: "alvara", nome: "Alvará e abertura de empresa", orgao: "Secretaria Municipal de Fazenda", tipo: "orientacao",
+    fazer: "Alvará e abertura de empresa são da Secretaria de Fazenda.", ref: "Abrir uma empresa leva em média 3,2 horas (prefeitura, 04/11/2026).",
+    p: ["alvara", "abrir empresa", "abrir um mei", "mei", "cnpj", "licenca de funcionamento", "abrir comercio"] },
+  { id: "ouvidoria", nome: "Reclamação de atendimento ou denúncia", orgao: "Ouvidoria-Geral do Município", tipo: "ouvidoria",
+    fazer: "Registre na Ouvidoria-Geral: WhatsApp (43) 3372-4530, telefone ou atendimento presencial.", ref: "Em 2025 a Ouvidoria respondeu em 6,46 dias, em média.",
+    p: ["mal atendid", "me tratou", "tratou mal", "grosseir", "denunci", "propina", "corrup", "ninguem responde", "ninguem da prefeitura", "nao me respond", "ouvidoria", "servidor"] },
+];
+const SV = Object.fromEntries(S.map(s => [s.id, s]));
+
+const BAIRROS = ["Abussafe", "Aeroporto", "Alpes", "Alto Primavera", "Antares", "Bandeirantes", "Bela Suiça", "Cafezal", "Califórnia", "Carnascialli", "Centro", "Cidade Industrial 1", "Cilo 2", "Cilo 3", "Cinco Conjuntos", "Coliseu", "Columbia", "Ernani", "Fraternidade", "Guanabara", "Heimtal", "Higienópolis", "Ideal", "Industrial 4", "Inglaterra", "Interlagos", "Ipiranga", "Jamile Dequech", "Leonor", "Lindóia", "Maria Celina", "Milton Gavetti", "Nova Esperança", "Novo Amparo", "Olímpico", "Ouro Verde", "Palhano 1", "Palhano 2", "Parigot", "Paris", "Parque das Indústrias Leves", "Perobinha", "Petrópolis", "Pioneiros", "Piza", "Presidente", "Primavera", "Quebec", "Royal", "Sabará", "Shangri-lá", "São Jorge", "São Lourenço", "São Miguel", "Terra Nova", "Tucanos", "Tókio", "União da Vitória", "Vila Brasil", "Vila Casoni", "Vila Nova", "Vila Recreio", "Vila Siam", "Vista Bela", "Vivendas do Arvoredo", "Vivi Xavier"];
+const APELIDOS = { "gleba palhano": "Palhano 1", "jardim primavera": "Primavera", "shangri la": "Shangri-lá", "cinco conjuntos": "Cinco Conjuntos" };
+// nomes que também são palavras comuns: só contam depois de "bairro", "jardim", "no", "na"...
+const AMBIGUOS = new Set(["Ideal", "Royal", "Paris", "Alpes", "Leonor", "Ernani", "Piza", "Primavera", "Pioneiros", "Fraternidade", "Inglaterra", "Presidente", "Centro", "Aeroporto", "Columbia", "Antares", "Ipiranga", "Coliseu", "Olímpico"]);
+
+// ============ Utilidades ============
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const $ = id => document.getElementById(id);
+const pct = (a, b) => b ? Math.round(100 * a / b) + "%" : "0%";
+
+function mascarar(t) {
+  return t
+    .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, "[e-mail removido]")
+    .replace(/\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b/g, "[CPF removido]")
+    .replace(/(\(?\b\d{2}\)?\s?)?\b9?\d{4}[-\s]?\d{4}\b/g, "[telefone removido]");
+}
+
+function acharBairro(t) {
+  const n = " " + norm(t).replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ") + " ";
+  for (const [ap, b] of Object.entries(APELIDOS)) if (n.includes(" " + ap + " ")) return b;
+  const ordem = [...BAIRROS].sort((a, b) => b.length - a.length);
+  for (const b of ordem) {
+    const nb = norm(b).replace(/[^a-z0-9 ]/g, " ");
+    if (AMBIGUOS.has(b)) {
+      if (new RegExp(`\\b(bairro|jardim|jd|vila|conjunto|no|na|do|da)\\s+${nb}\\b`).test(n)) return b;
+    } else if (n.includes(" " + nb + " ")) return b;
+  }
+  return null;
+}
+
+function acharEndereco(t) {
+  const m = t.match(/\b(rua|r\.|avenida|av\.?|travessa|alameda|pra[çc]a|rodovia)\s+((?:[A-ZÀ-Ý0-9][\wÀ-ÿ.'-]*|d[aeo]s?|e)(?:\s+(?:[A-ZÀ-Ý0-9][\wÀ-ÿ.'-]*|d[aeo]s?|e))*)(\s*,?\s*(?:n[º°o.]?\s*)?\d{1,5})?/i);
+  if (!m) return null;
+  return (m[1] + " " + m[2] + (m[3] || "")).replace(/\s+/g, " ").replace(/\s+(d[aeo]s?|e)$/i, "").trim();
+}
+
+// ============ Triagem por regras (funciona sem IA) ============
+function viaRegras(texto) {
+  const n = " " + norm(texto).replace(/[^a-z0-9 ]/g, " ").replace(/\s+/g, " ") + " ";
+  const pontos = S.map(s => ({ id: s.id, v: s.p.reduce((acc, k) => acc + (n.includes(k) ? (k.includes(" ") ? 2 : 1) : 0), 0) }));
+  pontos.sort((a, b) => b.v - a.v || (a.id === "emergencia" ? -1 : b.id === "emergencia" ? 1 : 0));
+  const [m1, m2] = pontos;
+  if (!m1.v) return { servico: "outro", confianca: 0, resumo: "" };
+  const conf = Math.max(0.3, Math.min(0.95, 0.55 + 0.15 * (m1.v - m2.v)));
+  return { servico: m1.id, confianca: conf, resumo: "" };
+}
+
+// ============ Triagem por IA (Claude, na conta de quem usa) ============
+let sample = null;
+const LISTA_SERV = S.map(s => `- ${s.id}: ${s.nome} (${s.orgao})`).join("\n");
+function promptUm(texto) {
+  return `Você faz a triagem de pedidos de moradores para a Prefeitura de Londrina (PR).
+Escolha UM serviço da lista que resolve o pedido. Se nenhum servir, use "outro".
+Prioridade: se houver risco imediato (algo caiu agora, alagamento dentro de casa, fio soltando faísca), use "emergencia".
+
+Serviços:
+${LISTA_SERV}
+
+Bairros válidos de Londrina: ${BAIRROS.join(", ")}.
+"Jardim Primavera" é o bairro Primavera; "Gleba Palhano" é Palhano 1.
+
+Responda só com JSON neste formato:
+{"servico": "id", "confianca": 0.0 a 1.0, "bairro": "nome exato da lista ou null", "endereco": "rua e número citados, ou null", "resumo": "o pedido em até 12 palavras"}
+
+Pedido do morador (dados pessoais já removidos):
+"""${texto}"""`;
+}
+async function viaIA(texto) {
+  const r = await sample.json(promptUm(texto), { modelTier: "quick" });
+  const servico = SV[r?.servico] ? r.servico : "outro";
+  const conf = Number(r?.confianca);
+  return {
+    servico, confianca: Number.isFinite(conf) ? Math.max(0, Math.min(1, conf)) : 0.5,
+    bairro: BAIRROS.includes(r?.bairro) ? r.bairro : null,
+    endereco: typeof r?.endereco === "string" && r.endereco.length < 80 ? r.endereco : null,
+    resumo: typeof r?.resumo === "string" ? r.resumo.slice(0, 120) : "",
+  };
+}
+const MSG_IA = {
+  not_granted: "A IA não foi autorizada nesta visualização. Seguimos com as regras.",
+  sampling_disabled: "A IA não está disponível para esta conta. Seguimos com as regras.",
+  rate_limited: "Muitas chamadas à IA agora. Tente de novo em alguns minutos; por enquanto, regras.",
+  session_expired: "Sua sessão expirou: entre de novo na conta Claude para usar a IA.",
+};
+const SEM_VOLTA = new Set(["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed"]);
+function desligarIA(msg) { sample = null; $("usar-ia").checked = false; $("usar-ia").disabled = true; $("testar-ia").disabled = true; $("status-ia").textContent = msg; }
+
+// ============ Classificar um pedido ============
+async function classificar(texto) {
+  const limpo = mascarar(texto);
+  let r, motor = "Regras simples (sem IA)";
+  if ($("usar-ia").checked && sample) {
+    try { r = await viaIA(limpo); motor = "IA (Claude)"; }
+    catch (e) {
+      const msg = MSG_IA[e?.code] || "A IA não respondeu agora. Usamos as regras.";
+      if (SEM_VOLTA.has(e?.code)) desligarIA(msg); else $("status-ia").textContent = msg;
+      r = viaRegras(limpo); motor = "Regras simples (a IA não respondeu)";
+    }
+  } else r = viaRegras(limpo);
+  r.bairro = r.bairro || acharBairro(limpo);
+  r.endereco = r.endereco || acharEndereco(limpo);
+  const baixa = r.servico === "outro" || r.confianca < 0.6;
+  const tipo = baixa ? "atendente" : SV[r.servico].tipo;
+  return { ...r, limpo, motor, tipo, t: Date.now(), id: "p" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6) };
+}
+
+const VISUAL = {
+  chamado:     { rot: "Abrir chamado no Londrina ON", c: "var(--accent)", cb: "var(--soft)" },
+  orientacao:  { rot: "Resolve com orientação, sem fila", c: "var(--ok)", cb: "var(--ok-bg)" },
+  ouvidoria:   { rot: "Registrar na Ouvidoria", c: "var(--warn)", cb: "var(--warn-bg)" },
+  emergencia:  { rot: "Emergência: ligue 199", c: "var(--bad)", cb: "var(--bad-bg)" },
+  atendente:   { rot: "Vai para um atendente", c: "var(--warn)", cb: "var(--warn-bg)" },
+};
+
+function mostrarResultado(p) {
+  const v = VISUAL[p.tipo], s = SV[p.servico];
+  const corpo = p.tipo === "atendente"
+    ? `<h3>Não entendemos com segurança</h3>
+       <p>${s ? `Talvez seja <b>${esc(s.nome)}</b>, mas a confiança ficou baixa (${pct(p.confianca, 1)}).` : "Nenhum serviço do catálogo combinou com o pedido."}
+       O pedido vai para a fila de um atendente da Ouvidoria, já com o texto limpo de dados pessoais.</p>`
+    : `<h3>${esc(s.nome)}</h3>
+       <dl>
+         <dt>Quem resolve</dt><dd>${esc(s.orgao)}</dd>
+         <dt>O que fazer</dt><dd>${esc(s.fazer)}</dd>
+         ${s.ref ? `<dt>Bom saber</dt><dd>${esc(s.ref)}${s.link ? ` <a href="${s.link}">Abrir o mapa</a>` : ""}</dd>` : ""}
+         <dt>Onde</dt><dd>${esc(p.endereco || "endereço não identificado")} · ${esc(p.bairro || "bairro não identificado")}</dd>
+       </dl>`;
+  $("resultado").innerHTML = `<div class="cartao res" style="--c:${v.c};--cb:${v.cb}">
+      <span class="tipo">${v.rot}</span>${corpo}
+      <div class="meta"><span>Triagem: ${esc(p.motor)}</span><span>Confiança: ${pct(p.confianca, 1)}</span>${p.resumo ? `<span>Resumo: ${esc(p.resumo)}</span>` : ""}</div>
+      <div class="enviado">Texto analisado: ${esc(p.limpo)}</div>
+      <div class="status">Pedido guardado no painel deste navegador.</div>
+    </div>`;
+}
+
+// ============ Pedidos guardados neste navegador ============
+const CHAVE = "onde-resolvo-pedidos";
+function lerMeus() { try { return JSON.parse(localStorage.getItem(CHAVE) || "[]"); } catch { return []; } }
+function salvarMeus(lista) { try { localStorage.setItem(CHAVE, JSON.stringify(lista.slice(-200))); } catch { /* sem armazenamento: só nesta visita */ } }
+let meus = lerMeus();
+
+// Exemplos para o painel não abrir vazio (marcados como exemplo)
+const H = 3600e3;
+const EX = [
+  ["Lâmpada apagada na Rua Pernambuco, 120, Cinco Conjuntos", "lampada_apagada", "Cinco Conjuntos", "Rua Pernambuco, 120", 3],
+  ["Poste apagado faz dias, Rua Pernambuco 120", "lampada_apagada", "Cinco Conjuntos", "Rua Pernambuco, 120", 9],
+  ["Rua escura, lâmpada do poste queimou, Rua Pernambuco, 120", "lampada_apagada", "Cinco Conjuntos", "Rua Pernambuco, 120", 20],
+  ["Buraco grande na Rua Alcides Turini, perto do 400", "buraco", "Shangri-lá", "Rua Alcides Turini", 5],
+  ["Asfalto todo esburacado na Rua Alcides Turini", "buraco", "Shangri-lá", "Rua Alcides Turini", 30],
+  ["Mato alto na praça do Jardim Primavera", "mato", "Primavera", null, 12],
+  ["Sinaleiro piscando na Avenida Higienópolis com a JK", "semaforo", "Higienópolis", "Avenida Higienópolis", 2],
+  ["Semáforo da Av. Higienópolis apagado", "semaforo", "Higienópolis", "Avenida Higienópolis", 4],
+  ["Bueiro sem tampa na Rua Pará, 900, Centro", "bueiro", "Centro", "Rua Pará, 900", 26],
+  ["O asfalto afundou na frente da escola na Vila Nova", "afundamento", "Vila Nova", null, 40],
+  ["Quero saber minha posição na fila do ortopedista", "consulta", null, null, 1],
+  ["Exame de ultrassom pedido há meses, como vejo a fila?", "consulta", null, null, 6],
+  ["Estou com febre e tosse, posso ser atendido sem sair de casa?", "sintoma", null, null, 8],
+  ["Segunda via do IPTU", "iptu", null, null, 10],
+  ["Recebi um boleto por um site estranho, é golpe?", "iptu", null, null, 15],
+  ["Preciso de vaga em creche para minha filha", "vaga_cmei", "Vista Bela", null, 22],
+  ["Caiu uma árvore em cima do fio agora", "emergencia", "Presidente", null, 0.5],
+  ["Água parada em piscina abandonada no terreno vizinho", "dengue", "Petrópolis", null, 18],
+  ["A atendente do posto me tratou muito mal", "ouvidoria", null, null, 28],
+  ["Ônibus 305 nunca passa no horário", "onibus", null, null, 33],
+  ["preciso resolver aquele problema do papel", "outro", null, null, 7],
+  ["meu vizinho faz barulho de madrugada", "outro", "Quebec", null, 44],
+];
+const EXEMPLOS = EX.map(([texto, servico, bairro, endereco, horas], k) => ({
+  id: "ex" + k, limpo: texto, servico, bairro, endereco, t: Date.now() - horas * H, exemplo: true,
+  confianca: servico === "outro" ? 0 : 0.9, motor: "exemplo",
+  tipo: servico === "outro" ? "atendente" : SV[servico].tipo,
+}));
+
+// ============ Painel ============
+function quando(t) {
+  const h = (Date.now() - t) / H;
+  return h < 1 ? "agora há pouco" : h < 24 ? `há ${Math.round(h)} h` : `há ${Math.round(h / 24)} dia(s)`;
+}
+function chaveRua(e) { return e ? norm(e).replace(/^(rua|r\.|avenida|av\.?|travessa|alameda|praca)\s+/, "").replace(/[^a-z ]/g, "").trim() : ""; }
+
+function desenharPainel() {
+  const itens = ($("mostrar-ex").checked ? EXEMPLOS : []).concat(meus.map(p => ({ ...p, meu: true })));
+  const total = itens.length;
+  const orient = itens.filter(p => p.tipo === "orientacao" || p.tipo === "emergencia").length;
+  const chamados = itens.filter(p => p.tipo === "chamado");
+  const atend = itens.filter(p => p.tipo === "atendente");
+
+  // junta pedidos iguais: mesmo serviço, bairro e rua, em até 7 dias
+  const lista = [], ultimoGrupo = new Map();
+  chamados.slice().sort((a, b) => a.t - b.t).forEach(p => {
+    const k = [p.servico, p.bairro || "?", chaveRua(p.endereco)].join("|");
+    const g = ultimoGrupo.get(k);
+    if (g && p.t - g.ultimo < 7 * 24 * H) { g.n++; g.ultimo = p.t; g.meu = g.meu || !!p.meu; }
+    else { const novo = { ...p, n: 1, ultimo: p.t, meu: !!p.meu }; lista.push(novo); ultimoGrupo.set(k, novo); }
+  });
+  lista.sort((a, b) => b.n - a.n || b.ultimo - a.ultimo);
+  const juntados = chamados.length - lista.length;
+
+  $("kpis").innerHTML = [
+    [total, "pedidos entendidos", "var(--accent)"],
+    [pct(orient, total), `resolvidos só com orientação (${orient})`, "var(--ok)"],
+    [lista.length, `chamados para o Londrina ON (${juntados} repetidos juntados)`, "var(--accent)"],
+    [atend.length, "foram para um atendente", "var(--warn)"],
+  ].map(([n, t, c]) => `<div class="kpi" style="--c:${c}"><b>${n}</b><span>${t}</span></div>`).join("");
+
+  const porOrgao = {};
+  itens.forEach(p => { const o = p.tipo === "atendente" ? "Atendente da Ouvidoria" : SV[p.servico].orgao; porOrgao[o] = (porOrgao[o] || 0) + 1; });
+  const max = Math.max(1, ...Object.values(porOrgao));
+  $("barras").innerHTML = Object.entries(porOrgao).sort((a, b) => b[1] - a[1]).map(([o, n]) =>
+    `<div class="barra"><span>${esc(o)}</span><span class="t"><i style="width:${(100 * n / max).toFixed(1)}%"></i></span><span class="n">${n}</span></div>`).join("")
+    || `<p class="status">Nenhum pedido ainda. Faça um na aba "Fazer um pedido".</p>`;
+
+  $("tab-chamados").innerHTML = lista.map(g => `<tr><td>${esc(SV[g.servico].nome)}</td><td>${esc(g.bairro || "—")}</td><td>${esc(g.endereco || "—")}</td>
+      <td class="num">${g.n > 1 ? `<span class="tag dup">${g.n}</span>` : 1}</td><td>${quando(g.ultimo)}</td>
+      <td>${g.meu ? '<span class="tag meu">seu pedido</span>' : '<span class="tag">exemplo</span>'}</td></tr>`).join("")
+    || `<tr><td colspan="6" class="status">Nenhum chamado.</td></tr>`;
+
+  $("tab-atendente").innerHTML = atend.sort((a, b) => b.t - a.t).map(p => `<tr><td>${esc(p.limpo)}</td>
+      <td>${p.servico === "outro" ? "nenhum serviço combinou" : `confiança baixa (${pct(p.confianca, 1)})`}</td>
+      <td>${p.meu ? '<span class="tag meu">seu pedido</span>' : '<span class="tag">exemplo</span>'}</td></tr>`).join("")
+    || `<tr><td colspan="3" class="status">Nenhum pedido para atendente.</td></tr>`;
+}
+
+// ============ Teste de qualidade ============
+const TESTE = [
+  ["A lâmpada do poste aqui na frente de casa tá apagada faz uma semana, Rua Pará 500, Centro", "lampada_apagada"],
+  ["o poste da esquina fica aceso o dia inteiro, desperdício", "lampada_dia"],
+  ["tem um buraco enorme na Av. Madre Leônia, já estourou o pneu do meu carro", "buraco"],
+  ["o asfalto afundou na frente da escola, abriu uma cratera", "afundamento"],
+  ["o mato da praça do Jardim Primavera tá na altura do joelho", "mato"],
+  ["boca de lobo entupida, quando chove alaga a rua toda", "bueiro"],
+  ["roubaram a tampa do bueiro e alguém vai cair ali", "bueiro"],
+  ["o sinaleiro da Higienópolis com a JK tá piscando amarelo desde ontem", "semaforo"],
+  ["o caminhão do lixo não passa na minha rua há 10 dias", "coleta"],
+  ["a árvore da calçada tá cheia de cupim e inclinando pra cima da casa", "arvore"],
+  ["caiu uma árvore em cima do fio na minha rua agora, tá soltando faísca", "emergencia"],
+  ["o vendaval arrancou o telhado da vizinha", "emergencia"],
+  ["preciso saber em que lugar da fila eu tô pro ortopedista", "consulta"],
+  ["meu exame de ultrassom foi pedido em março e até agora nada", "consulta"],
+  ["to com febre e dor de garganta, dá pra ser atendido sem sair de casa?", "sintoma"],
+  ["o terreno do lado tem uma piscina abandonada cheia de água parada", "dengue"],
+  ["não chegou o carnê do IPTU, como tiro a segunda via?", "iptu"],
+  ["recebi um boleto da prefeitura por um site estranho, é golpe?", "iptu"],
+  ["quero atualizar meu Cadastro Único pro Bolsa Família", "cadunico"],
+  ["preciso de vaga na creche pro meu filho de 2 anos", "vaga_cmei"],
+  ["o ônibus 305 nunca passa no horário de manhã", "onibus"],
+  ["como faço pra entrar na fila da casa própria", "moradia"],
+  ["quero abrir um MEI de salão de beleza, preciso de alvará?", "alvara"],
+  ["a atendente do posto de saúde me tratou muito mal", "ouvidoria"],
+  ["quero denunciar um servidor que cobra propina", "ouvidoria"],
+  ["rua toda escura no Cinco Conjuntos, nenhuma luz funcionando", "lampada_apagada"],
+  ["tem um galho enorme quase caindo na calçada da escola", "arvore"],
+  ["a rua alagou e entrou água dentro das casas", "emergencia"],
+  ["o farol de pedestre da Leste-Oeste não abre nunca", "semaforo"],
+  ["meu filho tá com diarreia e vômito leve desde ontem", "sintoma"],
+  ["tem foco do mosquito da dengue no quintal abandonado do vizinho", "dengue"],
+  ["o ponto de ônibus não tem cobertura e a gente toma chuva", "onibus"],
+  ["o lixo reciclável fica acumulado na esquina", "coleta"],
+  ["preciso pedir poda da árvore que está encostando no fio", "arvore"],
+  ["quanto tempo demora pra ter um cardiologista pelo SUS?", "consulta"],
+  ["a calçada da praça está tomada pelo mato na Vila Nova", "mato"],
+  ["como emito a guia do ITBI", "iptu"],
+  ["minha mãe idosa precisa de ajuda do CRAS pra conseguir benefício", "cadunico"],
+  ["a rua tá cheia de buraco depois da chuva no Shangri-lá", "buraco"],
+  ["ninguém da prefeitura me responde há dois meses", "ouvidoria"],
+];
+// Frases NOVAS: escritas depois das regras e nunca usadas para ajustá-las (o teste honesto)
+const NOVAS = [
+  ["a luz do poste da minha quadra não acende mais", "lampada_apagada"],
+  ["tem uma cratera na rua que já engoliu a roda de uma moto", "afundamento"],
+  ["a praça perto de casa virou um matagal", "mato"],
+  ["a grade da boca de lobo sumiu", "bueiro"],
+  ["o semáforo da Avenida Maringá está todo apagado", "semaforo"],
+  ["faz duas semanas que ninguém recolhe o lixo aqui no bairro", "coleta"],
+  ["um galho grande quebrou e está pendurado em cima da calçada", "arvore"],
+  ["a enxurrada invadiu minha casa, preciso de ajuda", "emergencia"],
+  ["quero marcar uma consulta com o oftalmologista", "consulta"],
+  ["estou resfriado e com tosse, tem atendimento online?", "sintoma"],
+  ["a caixa d'água do vizinho está destampada e cheia de larvas", "dengue"],
+  ["o imposto da minha casa veio com valor errado", "iptu"],
+  ["como me inscrevo no Bolsa Família", "cadunico"],
+  ["minha filha precisa entrar no CMEI do bairro", "vaga_cmei"],
+  ["o circular da zona norte vive lotado", "onibus"],
+  ["quero me cadastrar pra ganhar uma casa da prefeitura", "moradia"],
+  ["como tiro a licença pra abrir minha lanchonete", "alvara"],
+  ["o funcionário do terminal foi grosso comigo", "ouvidoria"],
+  ["o telhado da escola voou com o vento", "emergencia"],
+  ["a rua tá tão escura que tenho medo de passar à noite", "lampada_apagada"],
+];
+const TODAS = TESTE.map(x => [...x, "base"]).concat(NOVAS.map(x => [...x, "nova"]));
+$("tab-teste").innerHTML = TODAS.map(([f, s, g], i) => `<tr><td class="num">${i + 1}</td><td>${esc(f)}</td><td>${esc(SV[s].nome)}</td><td><span class="tag">${g === "nova" ? "frase nova" : "usada nas regras"}</span></td></tr>`).join("");
+
+const placar = {};
+function mostrarPlacar(nome, respostas) {
+  const erros = [];
+  const ok = { base: 0, nova: 0 };
+  TODAS.forEach(([f, certo, g], i) => { if (respostas[i] === certo) ok[g]++; else erros.push([f, certo, respostas[i], g]); });
+  placar[nome] = ok;
+  $("placar").innerHTML = Object.entries(placar).map(([n, r]) =>
+    `<div class="kpi" style="--c:${r.nova / NOVAS.length >= 0.85 ? "var(--ok)" : "var(--warn)"}"><b>${pct(r.nova, NOVAS.length)}</b>
+      <span>${esc(n)}: ${r.nova} de ${NOVAS.length} frases novas · ${r.base} de ${TESTE.length} nas frases usadas para montar as regras</span></div>`).join("");
+  $("erros-cartao").hidden = false;
+  $("erros-legenda").textContent = `Erros de: ${nome}.`;
+  $("tab-erros").innerHTML = erros.map(([f, c, r, g]) => `<tr><td>${esc(f)} <span class="tag">${g === "nova" ? "nova" : "usada"}</span></td><td class="certo">${esc(SV[c].nome)}</td><td class="errado">${esc(SV[r]?.nome || "nenhum serviço")}</td></tr>`).join("")
+    || `<tr><td colspan="3" class="certo">Nenhum erro.</td></tr>`;
+}
+$("testar-regras").addEventListener("click", () => {
+  mostrarPlacar("Regras simples", TODAS.map(([f]) => viaRegras(mascarar(f)).servico));
+  $("status-teste").textContent = "Regras rodadas aqui no navegador, sem IA. A nota que vale é a das frases novas.";
+});
+$("testar-ia").addEventListener("click", async () => {
+  if (!sample) return;
+  const b = $("testar-ia"); b.disabled = true; $("status-teste").textContent = `A IA está lendo os ${TODAS.length} pedidos...`;
+  const prompt = `Você faz a triagem de pedidos de moradores para a Prefeitura de Londrina (PR).
+Para CADA pedido numerado, escolha UM serviço da lista (ou "outro"). Risco imediato (algo caiu agora, alagamento dentro de casa, faísca) é "emergencia".
+
+Serviços:
+${LISTA_SERV}
+
+Pedidos:
+${TODAS.map(([f], i) => `${i + 1}. ${mascarar(f)}`).join("\n")}
+
+Responda só com um JSON array de ${TODAS.length} objetos, na ordem: [{"i": 1, "servico": "id"}, ...]`;
+  try {
+    const arr = await sample.json(prompt, { modelTier: "quick" });
+    const mapa = {};
+    (Array.isArray(arr) ? arr : []).forEach(o => { mapa[Number(o?.i) - 1] = o?.servico; });
+    mostrarPlacar("IA (Claude)", TODAS.map((_, i) => SV[mapa[i]] ? mapa[i] : "outro"));
+    $("status-teste").textContent = "Resposta da IA conferida com o gabarito.";
+  } catch (e) {
+    const msg = MSG_IA[e?.code] || "A IA não respondeu agora. Tente de novo em instantes.";
+    if (SEM_VOLTA.has(e?.code)) desligarIA(msg);
+    $("status-teste").textContent = msg;
+  } finally { if (sample) b.disabled = false; }
+});
+
+// ============ Pedido ============
+const CHIPS = ["Poste apagado na Rua Pará, 500, Centro", "Buraco enorme na Rua Alcides Turini, Shangri-lá", "Quero ver minha posição na fila do neurologista",
+               "Caiu uma árvore em cima do fio agora", "Recebi um boleto do IPTU por um site estranho", "Meu CPF é 123.456.789-09 e o lixo não passa há uma semana"];
+$("exemplos").innerHTML = CHIPS.map(c => `<button type="button" class="chip">${esc(c)}</button>`).join("");
+$("exemplos").addEventListener("click", e => { if (e.target.classList.contains("chip")) { $("texto").value = e.target.textContent; $("texto").focus(); } });
+
+$("entender").addEventListener("click", async () => {
+  const texto = $("texto").value.trim();
+  if (texto.length < 6) { $("resultado").innerHTML = `<div class="cartao status">Escreva o problema com um pouco mais de detalhe.</div>`; return; }
+  const b = $("entender"); b.disabled = true; b.textContent = "Analisando...";
+  try {
+    const p = await classificar(texto);
+    mostrarResultado(p);
+    meus.push(p); salvarMeus(meus); desenharPainel();
+  } finally { b.disabled = false; b.textContent = "Descobrir onde resolver"; }
+});
+$("mostrar-ex").addEventListener("change", desenharPainel);
+$("limpar").addEventListener("click", () => { meus = []; salvarMeus(meus); desenharPainel(); });
+
+// ============ Abas ============
+function abrirAba() {
+  const aba = ["pedir", "painel", "teste"].includes(location.hash.slice(1)) ? location.hash.slice(1) : "pedir";
+  ["pedir", "painel", "teste"].forEach(a => { $("aba-" + a).hidden = a !== aba; });
+  document.querySelectorAll("nav a").forEach(a => a.setAttribute("aria-current", a.dataset.aba === aba ? "page" : "false"));
+}
+window.addEventListener("hashchange", abrirAba);
+abrirAba();
+desenharPainel();
+
+// ============ IA: liga quando a visualização permite ============
+(async () => {
+  try { sample = (window.claude && claude.use) ? await claude.use("sample") : null; } catch { sample = null; }
+  if (sample) {
+    $("usar-ia").disabled = false; $("usar-ia").checked = true; $("testar-ia").disabled = false;
+    $("status-ia").textContent = "No primeiro uso, o Claude pede sua permissão; a análise usa a sua conta.";
+  } else {
+    $("status-ia").textContent = "IA indisponível nesta visualização (precisa estar logado no Claude). Usando regras simples.";
+  }
+})();
+</script>
+</body>
+</html>
