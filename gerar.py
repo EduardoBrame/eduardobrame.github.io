@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Gera projetos/*.html a partir dos dados abaixo. Rode: python3 gerar.py"""
 import re, html
-V = "5"  # versão do CSS: suba a cada mudança para furar o cache do navegador
+V = "6"  # versão do CSS: suba a cada mudança para furar o cache do navegador
 idx = open("index.html").read()
 ARQ = re.search(r'(<div class="arch">.*?</ol>)', idx, re.S).group(1)
 
@@ -9,7 +9,8 @@ P = [
  dict(slug="raio-x", nome="Raio-X Comercial", papel="dirigi", cat="ML + LLM · projeto de time (4 pessoas)",
   frase="Prepara a primeira reunião de um vendedor B2B com uma grande empresa, em minutos, usando só dado público. O LLM escreve o texto, mas não pode escrever nenhum número.",
   nums=[("595","empresas da CVM"),("384 mil","linhas contábeis"),("k = 4","silhueta corrigida"),("US$ 0,0008","por relatório")],
-  capa=("raiox-tela.jpg","Tela de teste (empresas e números inventados): indicadores, comparação com o grupo, resumo, perguntas para a reunião e empresas parecidas."),
+  capa=("raiox-thumb.jpg","Tela de teste, com empresas e números inventados: indicadores da empresa comparados com o grupo de empresas parecidas."),
+  galeria=[("raiox-tela.jpg","A tela completa: resumo, perguntas para a reunião e empresas parecidas para prospectar. Todo número vem do dado; o texto vem do LLM.","")],
   links=[],
   blocos=[
    ("O problema","<p>Antes da primeira reunião com uma grande conta, o vendedor B2B passa horas juntando balanço, notícia e concorrente à mão, e mesmo assim chega sem saber o que perguntar.</p><p>A pergunta do projeto: dá para gerar esse preparo em minutos, só com dado aberto, sem a IA inventar número?</p>"),
@@ -57,8 +58,8 @@ P = [
   nums=[("4","níveis de modelo"),("3","provedores com failover"),("12","achados de segurança corrigidos"),("2 min","sync da memória")],
   capa=None, links=[],
   blocos=[
-   ("O problema","<p>Eu queria usar IA no dia a dia sem abrir arquivos, sem pagar modelo caro para pergunta simples e sem deixar a IA fazer algo irreversível sozinha.</p>"),
    ("Arquitetura", "FULL"),
+   ("O problema","<p>Eu queria usar IA no dia a dia sem abrir arquivos, sem pagar modelo caro para pergunta simples e sem deixar a IA fazer algo irreversível sozinha.</p>"),
    ("Decisões","<ul><li><b>Sem SSH público:</b> administração só por rede privada; emergência pelo run-command da Azure.</li><li><b>Modelo pequeno na triagem:</b> a maior parte dos pedidos não precisa do modelo caro. Cada resposta mostra modelo, tokens e custo.</li><li><b>Confirmação humana:</b> ação irreversível (evento com convidado, mudança de código) espera um \"sim\".</li><li><b>Revisão independente:</b> três agentes revisores (infra, segurança, UX). A revisão de segurança achou 12 problemas, corrigidos e testados antes de ligar.</li><li><b>Privacidade:</b> mensagem de terceiro é dado, nunca ordem; segredos ficam fora do código; nada das mensagens é publicado.</li></ul>"),
   ],
   fiz="A arquitetura, as regras de segurança e custo e os testes de aceitação.", dirigi="A implementação (Python, systemd, configuração da VM) foi feita com agentes de IA sob a minha direção.",
@@ -113,7 +114,7 @@ for i,p in enumerate(P):
     o.append('<div class="tags">'+"".join(f'<span class="tag">{t}</span>' for t in p["tags"])+'</div></header>')
     if p["capa"]: o.append(f'<figure class="capa"><img src="../assets/img/{p["capa"][0]}" alt="{html.escape(p["capa"][1])}" loading="eager"><figcaption>{p["capa"][1]}</figcaption></figure>')
     for t,b in p["blocos"]:
-        if b == "FULL": o.append(f'<section class="bloco" id="sistema" style="display:block"><h2>{t}</h2><p class="sub" style="margin-top:8px">Passe o mouse nos passos para ver onde cada um acontece.</p>{ARQ}</section>')
+        if b == "FULL": o.append(f'<section class="bloco" id="sistema" style="display:block"><h2 style="margin-bottom:20px">{t}</h2>{ARQ}</section>')
         else: o.append(f'<section class="bloco"><h2>{t}</h2><div>{b}</div></section>')
     if p.get("galeria"):
         o.append('<section class="bloco"><h2>Imagens</h2><div class="gal">'+"".join(f'<figure class="{c}"><img src="../assets/img/{f}" alt="{html.escape(cap)}" loading="lazy"><figcaption>{cap}</figcaption></figure>' for f,cap,c in p["galeria"])+'</div></section>')

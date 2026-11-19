@@ -6,7 +6,7 @@
 <script>try{var t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=5"></head><body>
+<link rel="stylesheet" href="assets/style.css?v=6"></head><body>
 <a class="skip" href="#projetos">Pular para projetos</a>
 <nav><div class="wrap"><a class="me" href="#">Eduardo Bramé</a><a href="#projetos">Projetos</a><a href="#sobre">Sobre</a><a href="#sistema">Arquitetura</a><a class="ct" href="#contato">Contato</a><button id="tema" aria-label="Alternar tema claro/escuro">◐</button></div></nav>
 
@@ -39,7 +39,7 @@
    <h3><a href="projetos/raio-x.html">Raio-X Comercial</a></h3>
    <p class="res">Prepara a primeira reunião de um vendedor B2B com uma grande empresa: lê os balanços públicos, acha o perfil e as empresas parecidas e escreve o briefing. O LLM escreve o texto, mas não pode escrever nenhum número.</p>
    <div class="nums"><div><b>595</b>empresas</div><div><b>384 mil</b>linhas</div><div><b>k = 4</b>silhueta corrigida</div></div>
-   <div class="chain" aria-label="Pipeline do Raio-X"><span>CVM</span><i>→</i><span>PostgreSQL</span><i>→</i><span>K-means</span><i>→</i><span class="ia">LLM com marcadores</span><i>→</i><span class="ok">Validador</span></div>
+   <div class="chain" aria-label="Pipeline do Raio-X"><span>CVM</span><i>→</i><span>PostgreSQL</span><i>→</i><span>K-means</span><i>→</i><span class="ia">LLM + marcadores</span><i>→</i><span class="ok">Validador</span></div>
    <div class="tags"><span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">scikit-learn</span><span class="tag">LangChain</span></div>
    <a class="mais" href="projetos/raio-x.html">Ver o projeto completo →</a>
    
@@ -123,7 +123,7 @@
 
 <section id="sistema" class="rv">
  <div class="kicker">Arquitetura</div><h2>Cérebro: um sistema que roda 24 h</h2>
- <p class="sub">Uso este sistema todo dia. Defini a arquitetura e as regras de segurança e custo, dirigi os agentes na implementação e validei cada parte com testes reais. Passe o mouse nos passos para ver onde cada um acontece.</p>
+ <p class="sub">Uso este sistema todo dia. Defini a arquitetura e as regras de segurança e custo, dirigi os agentes na implementação e validei cada parte com testes reais.</p>
  <div class="arch">
   <div class="zona"><small>Quem usa</small>
    <div class="node" data-step="1"><b>WhatsApp</b><span>só o meu número dá ordens</span></div>

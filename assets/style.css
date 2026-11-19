@@ -125,3 +125,9 @@ figure{margin:0}figcaption{font-size:14px;color:var(--mut);padding:10px 14px;bor
 .vitrine>div:last-child{align-self:center}
 .vitrine .thumb img{object-position:top center}
 .capa img{max-height:640px;object-fit:cover;object-position:top center}
+/* v6: revisão UX sênior */
+.bloco .flow{max-width:none;padding-left:0}.bloco .flow li{margin:0}
+.chain{gap:4px}.chain span{padding:5px 8px;font-size:12px}
+.hero{padding:48px 0 24px}.provas{padding-bottom:16px}section{padding-top:64px}
+.papel,.cat{font-family:inherit;letter-spacing:0}.cat{text-transform:none;font-size:13px}
+.card{border-left:1px solid var(--line)}.card:hover{border-left-color:color-mix(in srgb,var(--c) 40%,var(--line))}
