@@ -1,137 +1,191 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Eduardo Bramé · Dados e IA</title>
-<meta name="description" content="Eduardo Bramé: engenharia de dados com IA aplicada. Do dado bruto ao sistema que roda sozinho.">
+<html lang="pt-BR" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eduardo Bramé · IA aplicada com base em dados</title>
+<meta name="description" content="Eduardo Bramé: IA generativa sobre dados confiáveis, do problema ao produto.">
+<meta property="og:title" content="Eduardo Bramé · IA aplicada com base em dados"><meta property="og:image" content="https://eduardobrame.github.io/assets/eduardo.jpg">
+<script>try{var t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css"></head><body>
-<nav><div class="wrap"><b>Eduardo Bramé</b><a href="#projetos">Projetos</a><a href="#sistema">System design</a><a href="#honesto">Habilidades</a><a href="#contato">Contato</a></div></nav>
-<header><div class="wrap">
-<div class="kicker">Engenharia de dados · IA aplicada</div>
-<h1>Ingestão, qualidade e modelagem de dados,<br>com IA onde ela ajuda.</h1>
-<p class="lead">Trabalho no fluxo inteiro do dado: ingestão, limpeza, modelagem e entrega. Uso IA onde ela ajuda e ponho regras onde ela pode errar. Estagiário de IA na TCS, estudante de Análise e Desenvolvimento de Sistemas na PUC-PR, em Londrina.</p>
-<a class="btn p" href="#projetos">Ver projetos</a><a class="btn" href="#sistema">Ver a arquitetura</a><a class="btn" href="https://www.linkedin.com/in/eduardobrame/">LinkedIn</a>
-</div></header>
+<a class="skip" href="#projetos">Pular para projetos</a>
+<nav><div class="wrap"><a class="me" href="#">Eduardo Bramé</a><a href="#projetos">Projetos</a><a href="#sobre">Sobre</a><a href="#sistema">Arquitetura</a><a class="ct" href="#contato">Contato</a><button id="tema" aria-label="Alternar tema claro/escuro">◐</button></div></nav>
 
-<section class="pillars"><div class="wrap"><div class="grid">
-<div class="card"><h3>Dado confiável</h3><p>Trato a sujeira da base como hipótese de negócio, não como linha a apagar. Limpo em views SQL quando não posso mexer na origem e modelo em estrela para a análise ser simples.</p></div>
-<div class="card"><h3>Sistemas que rodam</h3><p>Coloco as coisas para rodar sem mim: serviço em VM Linux na nuvem, rede privada, sincronização automática, alerta de gasto e caminho de volta antes de mudar.</p></div>
-<div class="card"><h3>IA com controle</h3><p>O modelo não inventa número: o código confere. O modelo barato faz a triagem e o caro só entra quando precisa. Ação irreversível espera confirmação humana.</p></div>
-</div></div></section>
-
-<section id="projetos"><div class="wrap">
-<div class="kicker">Projetos</div><h2>O que eu construí</h2>
-<p class="sub">Cada card diz qual foi o meu papel. <span class="role fiz">fiz</span> é feito por mim. <span class="role dirigi">dirigi e validei</span> é construído com agentes de IA sob a minha especificação e com os meus testes.</p>
-<div class="grid">
-
-<div class="card"><span class="role dirigi">Dados públicos e geo</span>
-<h3>Árvore Segura Londrina</h3>
-<p>Diz à Defesa Civil quais árvores de rua vistoriar primeiro. Baixa o inventário público da prefeitura, cruza com vento e fiação e gera uma nota de risco num mapa que funciona offline.</p>
-<div class="nums"><div><b>41 mil</b>registros baixados</div><div><b>28,7 mil</b>árvores avaliadas</div><div><b>2.197</b>risco alto</div></div>
-<dl><dt>Ingestão</dt><dd>A API ArcGIS devolve até 2.000 registros por vez: paginação com offset. 12,4 mil registros (covas vazias e tocos) descartados com regra explícita.</dd>
-<dt>Nota</dt><dd>Defeitos × porte + fiação, simplificado do método ISA TRAQ</dd>
-<dt>Execução</dt><dd>Hoje é um script manual. O próximo passo é uma DAG agendada, com retry e checkpoint do offset, checagem de contagem e de nulos e carga incremental.</dd></dl>
-<div class="tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">shapely</span><span class="tag">ArcGIS REST</span><span class="tag">Open-Meteo</span></div>
-<p class="honest">Os pesos da nota ainda não foram calibrados com um técnico, e o inventário é de 2018. É um protótipo de hackathon.</p></div>
-
-<div class="card"><span class="role dirigi">ML e IA: minha parte num time de 4</span>
-<h3>Raio-X Comercial</h3>
-<p>Prepara a primeira reunião de um vendedor B2B com uma grande empresa. Cruza os balanços públicos da CVM, encontra o perfil e as empresas parecidas e escreve um briefing.</p>
-<div class="nums"><div><b>595</b>empresas</div><div><b>384 mil</b>linhas contábeis</div><div><b>259</b>testes no projeto do time</div><div><b>US$ 0,0008</b>por raio-x</div></div>
-<dl><dt>Dados</dt><dd>DFP da CVM (dado aberto), 2023 a 2025, em PostgreSQL</dd>
-<dt>ML</dt><dd>K-means com k pela silhueta e 5 vizinhos mais próximos. Achei uma silhueta de 0,77 enganosa (567 de 595 empresas num grupo só) e troquei por k = 4, com 0,29 e grupos úteis.</dd>
-<dt>IA</dt><dd>O LLM gera o texto com saída estruturada, mas não escreve números: usa marcadores, um validador confere e o código insere os valores reais.</dd></dl>
-<div class="tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">PostgreSQL</span><span class="tag">scikit-learn</span><span class="tag">LangChain</span><span class="tag">Streamlit</span><span class="tag">Docker</span></div>
-<p class="honest">Projeto final do programa de formação TCS. Fiz o ML, a camada de IA, o validador e a avaliação, escritos com Claude Code sob a minha direção e revisão. Repositório privado do time.</p></div>
-
-<div class="card"><span class="role fiz">Fiz</span>
-<h3>Bike Store: do caos no banco a um modelo estrela</h3>
-<p>Base de vendas com encoding corrompido, hierarquia de produto com NULL, datas como texto vazio e "n/a" contando como dado. Sem permissão de escrita, resolvi tudo em views SQL, sem tocar na origem.</p>
-<div class="nums"><div><b>~60 mil</b>linhas de vendas</div><div><b>18,4 mil</b>clientes</div><div><b>295</b>produtos</div></div>
-<dl><dt>Técnicas</dt><dd>REPLACE encadeado (encoding), CTE + COALESCE + UNION ALL (hierarquia), NULLIF ("n/a"), checagem de comprimento (datas)</dd>
-<dt>Achado</dt><dd>95% do lucro vem de bicicletas; acessórios têm 63% de margem contra 39%, então o cross-sell sobe a margem sem subir o volume.</dd></dl>
-<div class="tags"><span class="tag">PostgreSQL</span><span class="tag">SQL</span><span class="tag">Star Schema</span></div>
-<p><a href="https://github.com/EduardoBrame/bike-store-sql">Código SQL no GitHub →</a> · <a href="https://medium.com/@galicianie/loja-de-bicicletas-analytics-do-caos-no-banco-de-dados-a-um-dashboard-de-neg%C3%B3cio-com-sql-e-power-eddb010e2efd">Artigo completo no Medium →</a></p></div>
-
-<div class="card"><span class="role fiz">Fiz</span>
-<h3>Varejo: ETL e qualidade de dados</h3>
-<p>Base de transações com preço nulo, linhas fantasmas e produtos sem nome. Tratei cada caso com uma regra explícita antes de modelar.</p>
-<div class="nums"><div><b>628</b>linhas salvas por imputação</div><div><b>600+</b>nomes recuperados</div><div><b>604</b>linhas fantasmas removidas</div></div>
-<dl><dt>Técnicas</dt><dd>Preço = total ÷ quantidade; chave composta categoria + preço; calendário dimensional; outliers fora do ticket médio com μ±2σ (±3σ não mudava nada)</dd></dl>
-<div class="tags"><span class="tag">ETL</span><span class="tag">Star Schema</span><span class="tag">estatística</span></div></div>
-
-<div class="card"><span class="role dirigi">Infra e agentes</span>
-<h3>Cérebro: assistente 24 h na Azure</h3>
-<p>Um assistente no WhatsApp que lê as minhas tarefas, agenda e notas, escolhe o modelo pela dificuldade do pedido e delega trabalho a agentes. Tudo roda numa VM Linux sem porta de administração aberta.</p>
-<div class="nums"><div><b>4</b>níveis de modelo</div><div><b>3</b>provedores com failover</div><div><b>12</b>achados de segurança, corrigidos</div></div>
-<div class="tags"><span class="tag">Azure</span><span class="tag">Linux</span><span class="tag">systemd</span><span class="tag">Caddy</span><span class="tag">Tailscale</span><span class="tag">Python</span><span class="tag">Git</span></div>
-<p><a href="#sistema">Ver a arquitetura e as decisões →</a></p></div>
-
-<div class="card"><span class="role ideia">Produto e pitch</span>
-<h3>DRINA: 3º lugar no SmartCities Hackathon Londrina</h3>
-<p>Atendimento da prefeitura dentro do WhatsApp, para quem não vai baixar oito aplicativos. Num time de 5, fiz o pitch, o briefing e os scripts que geram as imagens. O mapa do briefing usa os dados do Árvore Segura.</p>
-<p>Junto veio o <b>Onde Resolvo</b>: o morador descreve o problema com as próprias palavras, o texto perde CPF, telefone e e-mail, e um classificador indica um entre 20 serviços. A versão só com regras acertou 13 de 20 frases novas.</p>
-<div class="tags"><span class="tag">produto</span><span class="tag">pitch</span><span class="tag">privacidade</span><span class="tag">classificação</span></div></div>
-</div></div></section>
-<section id="sistema"><div class="wrap">
-<div class="kicker">System design</div>
-<h2>Cérebro: um sistema que roda 24 h na Azure</h2>
-<p class="sub">Uso este sistema todo dia. Uma VM Linux na Azure, sem porta aberta para administração, roda um bot de WhatsApp, agentes de IA e a sincronização da memória com o GitHub. Eu defini a arquitetura, as regras de segurança e de custo, dirigi agentes de IA na implementação e validei cada parte com testes reais.</p>
-<div class="arch">
- <div class="zone"><small>Quem usa</small>
-  <div class="node"><b>WhatsApp</b><span>conversa com o assistente</span></div>
-  <div class="node"><b>Notebook</b><span>VS Code, CLI, Orca</span></div>
-  <div class="node"><b>Celular</b><span>terminal remoto</span></div>
-  <div class="node data"><b>GitHub privado</b><span>regras e memória versionadas</span></div>
+<main class="wrap">
+<header class="hero">
+ <div>
+  <span class="status"><i></i>Aberto a oportunidades · Londrina-PR · remoto</span>
+  <h1>IA generativa sobre <em>dados confiáveis</em>, do problema ao produto.</h1>
+  <p class="lead">Limpo e modelo o dado, monto a camada de IA e meço se ela acerta. Estagiário de IA na TCS, Análise e Desenvolvimento de Sistemas na PUC-PR.</p>
+  <div class="ctas"><a class="btn" href="#raiox">Ver projeto vitrine →</a><a href="https://www.linkedin.com/in/eduardobrame/">LinkedIn</a><a href="https://github.com/EduardoBrame">GitHub</a></div>
  </div>
- <div class="zone"><small>Azure · VM Ubuntu ARM · 2 vCPU, 4 GB</small>
-  <div class="vm">
-   <div class="node sec"><b>Firewall (NSG)</b><span>só 443 público; SSH fechado</span></div>
-   <div class="node"><b>Caddy</b><span>TLS e proxy reverso</span></div>
-   <div class="node"><b>Ponte WhatsApp</b><span>serviço systemd, 24 h</span></div>
-   <div class="node ai"><b>Porteiro (modelo pequeno)</b><span>classifica o pedido por dificuldade</span></div>
-   <div class="node ai"><b>Executores</b><span>sem IA · modelo leve · modelo médio com ferramentas · modelo grande</span></div>
-   <div class="node ai"><b>Orquestrador de agentes</b><span>até 3 tarefas/dia, só após "sim"</span></div>
-   <div class="node data"><b>Sincronização</b><span>timer a cada 2 min com o Git</span></div>
-   <div class="node sec"><b>Segredos</b><span>cofre externo, nunca em arquivo</span></div>
-   <div class="node sec"><b>Proteções</b><span>limite de 30 chamadas/h, alerta de gasto, snapshot</span></div>
+ <div class="foto"><img src="assets/eduardo.jpg" alt="Eduardo Bramé" width="260" height="260" fetchpriority="high"></div>
+</header>
+<div class="provas">
+ <div><b>595 empresas</b>384 mil linhas contábeis da CVM</div>
+ <div><b>US$ 0,0008</b>por relatório gerado com LLM validado</div>
+ <div><b>41 mil</b>registros públicos coletados por API</div>
+ <div><b>3º lugar</b>SmartCities Hackathon Londrina</div>
+</div>
+
+<section id="projetos">
+ <div class="kicker">Projetos</div><h2>O que eu construí</h2>
+ <p class="sub">Uso agentes de IA para ir mais longe do que iria sozinho. Por isso cada projeto diz qual foi o meu papel.</p>
+ <div class="legenda"><span class="papel p-fiz">Fiz</span><span class="papel p-dirigi">Dirigi IA e validei</span></div>
+ <div class="grid">
+
+ <article class="card dirigi vitrine rv" id="raiox">
+  <div>
+   <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">ML + LLM · time de 4</span>
+   <h3>Raio-X Comercial</h3>
+   <p class="res">Prepara a primeira reunião de um vendedor B2B com uma grande empresa: lê os balanços públicos, acha o perfil e as empresas parecidas e escreve o briefing. O LLM escreve o texto, mas não pode escrever nenhum número.</p>
+   <div class="nums"><div><b>595</b>empresas</div><div><b>384 mil</b>linhas</div><div><b>k = 4</b>silhueta corrigida</div></div>
+   <div class="tags"><span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">scikit-learn</span><span class="tag">LangChain</span></div>
+   <details><summary>Como foi feito</summary><dl>
+    <dt>Dados</dt><dd>DFP da CVM (dado aberto), de 2023 a 2025, carregados em PostgreSQL.</dd>
+    <dt>ML</dt><dd>K-means com k escolhido pela silhueta e os 5 vizinhos mais próximos. A silhueta de 0,77 era enganosa (567 das 595 empresas caíam num grupo só); troquei para k = 4, com 0,29 e grupos úteis.</dd>
+    <dt>IA sob controle</dt><dd>O LLM gera o texto com saída estruturada e marcadores no lugar dos números. Um validador confere e o código insere os valores reais.</dd>
+    <dt>Custo e testes</dt><dd>Cerca de US$ 0,0008 por relatório, com 259 testes no projeto do time. Streamlit na interface e Docker na entrega.</dd></dl>
+    <p class="nota">Projeto final do programa de formação da TCS. Minha parte foi o ML, a camada de IA, o validador e a avaliação, escritos com Claude Code sob a minha direção e revisão. O repositório é privado do time.</p></details>
+  </div>
+  <div class="pipe" aria-label="Pipeline do Raio-X">
+   <span>Balanços da CVM <small>dado aberto</small></span><i>↓</i>
+   <span>PostgreSQL <small>limpeza e modelagem</small></span><i>↓</i>
+   <span>K-means + vizinhos <small>perfil e parecidas</small></span><i>↓</i>
+   <span class="ia">LLM com marcadores <small>texto, sem números</small></span><i>↓</i>
+   <span class="ok">Validador <small>o código insere os números</small></span>
+  </div>
+ </article>
+
+ <article class="card fiz rv">
+  <span class="papel p-fiz">Fiz</span><span class="cat">SQL e modelagem</span>
+  <h3>Bike Store: do caos no banco ao modelo estrela</h3>
+  <p class="res">Encoding corrompido, NULL na hierarquia e "n/a" contando como dado. Sem permissão de escrita, limpei tudo em views SQL, sem tocar na origem.</p>
+  <div class="nums"><div><b>~60 mil</b>vendas</div><div><b>18,4 mil</b>clientes</div><div><b>95%</b>do lucro em bikes</div></div>
+  <div class="tags"><span class="tag">PostgreSQL</span><span class="tag">SQL</span><span class="tag">Star Schema</span></div>
+  <details><summary>Como foi feito</summary><dl>
+   <dt>Técnicas</dt><dd>REPLACE encadeado (encoding), CTE + COALESCE + UNION ALL (hierarquia), NULLIF ("n/a") e checagem de comprimento (datas vazias).</dd>
+   <dt>Achado</dt><dd>Acessórios têm 63% de margem, contra 39% das bicicletas: o cross-sell sobe a margem sem subir o volume.</dd></dl>
+   <p><a href="https://github.com/EduardoBrame/bike-store-sql">Código SQL no GitHub</a> · <a href="https://medium.com/@galicianie/loja-de-bicicletas-analytics-do-caos-no-banco-de-dados-a-um-dashboard-de-neg%C3%B3cio-com-sql-e-power-eddb010e2efd">Artigo no Medium</a></p></details>
+ </article>
+
+ <article class="card dirigi rv">
+  <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">Ingestão e geo</span>
+  <h3>Árvore Segura Londrina</h3>
+  <p class="res">Diz à Defesa Civil quais árvores de rua vistoriar primeiro, cruzando o inventário público da prefeitura com vento e fiação.</p>
+  <div class="nums"><div><b>41 mil</b>registros</div><div><b>28,7 mil</b>árvores avaliadas</div><div><b>2.197</b>risco alto</div></div>
+  <div class="tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">ArcGIS REST</span><span class="tag">shapely</span></div>
+  <details><summary>Como foi feito</summary><dl>
+   <dt>Ingestão</dt><dd>A API devolve até 2.000 registros por vez, então a coleta pagina com offset. Os 12,4 mil registros de covas vazias e tocos saem por uma regra explícita.</dd>
+   <dt>Nota de risco</dt><dd>Defeitos × porte + fiação, uma simplificação do método ISA TRAQ, num mapa que funciona offline.</dd>
+   <dt>Próximo passo</dt><dd>DAG agendada com retry e checkpoint do offset, checagem de contagem e de nulos e carga incremental.</dd></dl>
+   <p class="nota">Protótipo de hackathon: os pesos ainda não foram calibrados com um técnico e o inventário é de 2018.</p></details>
+ </article>
+
+ <article class="card dirigi rv">
+  <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">Infra e agentes</span>
+  <h3>Cérebro: assistente 24 h na Azure</h3>
+  <p class="res">Um assistente no WhatsApp que escolhe o modelo pela dificuldade do pedido, usa as minhas ferramentas e pede confirmação antes de qualquer ação irreversível.</p>
+  <div class="nums"><div><b>4</b>níveis de modelo</div><div><b>3</b>provedores com failover</div><div><b>12</b>achados de segurança corrigidos</div></div>
+  <div class="tags"><span class="tag">Azure</span><span class="tag">Linux</span><span class="tag">systemd</span><span class="tag">Python</span></div>
+  <details><summary>Como foi feito</summary><p>Ver a <a href="#sistema">arquitetura e as decisões</a> logo abaixo.</p></details>
+ </article>
+
+ <article class="card fiz rv">
+  <span class="papel p-fiz">Fiz</span><span class="cat">ETL e qualidade</span>
+  <h3>Varejo: regra explícita para cada sujeira</h3>
+  <p class="res">Preço nulo, linhas fantasmas e produtos sem nome: cada caso tratado com uma regra explícita antes de modelar.</p>
+  <div class="nums"><div><b>628</b>linhas salvas</div><div><b>600+</b>nomes recuperados</div><div><b>604</b>fantasmas fora</div></div>
+  <div class="tags"><span class="tag">ETL</span><span class="tag">Star Schema</span><span class="tag">estatística</span></div>
+  <details><summary>Como foi feito</summary><dl>
+   <dt>Técnicas</dt><dd>Preço = total ÷ quantidade, chave composta categoria + preço, calendário dimensional e outliers fora do ticket médio com μ±2σ (com ±3σ nada mudava).</dd></dl></details>
+ </article>
+
+ <article class="card fiz rv">
+  <span class="papel p-fiz">Fiz</span><span class="cat">Produto e pitch · time de 5</span>
+  <h3>DRINA: 3º lugar no SmartCities Hackathon</h3>
+  <p class="res">Atendimento da prefeitura dentro do WhatsApp, para quem não vai baixar oito aplicativos. Fiz o pitch, o briefing e os scripts que geram as imagens.</p>
+  <div class="nums"><div><b>3º</b>lugar</div><div><b>13/20</b>acertos do classificador por regras</div></div>
+  <div class="tags"><span class="tag">produto</span><span class="tag">privacidade</span><span class="tag">classificação</span></div>
+  <details><summary>Como foi feito</summary><p>Junto veio o Onde Resolvo: o morador descreve o problema com as próprias palavras, o texto perde CPF, telefone e e-mail, e um classificador indica um entre 20 serviços. O mapa do briefing reaproveita os dados do Árvore Segura.</p></details>
+ </article>
+ </div>
+</section>
+
+<section id="sobre" class="sobre rv">
+ <div><div class="kicker">Sobre mim</div><h2>Do UX para dados e IA</h2></div>
+ <p>Vim do UX, então começo pela pergunta de quem vai usar: que decisão isso precisa apoiar? Hoje respondo com dados e IA. Trato a sujeira da base como hipótese de negócio, modelo em SQL e ponho o LLM só onde ele ajuda, com o código conferindo os números. Uso agentes de IA para ir mais longe e digo, em cada projeto, o que fiz e o que dirigi e validei.</p>
+</section>
+
+<section id="habilidades" class="rv">
+ <div class="kicker">Sem enfeite</div><h2>O que eu faço, dirijo e estou aprendendo</h2>
+ <div class="tw"><table>
+  <tr><th style="width:22%">Nível</th><th>Itens</th></tr>
+  <tr><td><span class="papel p-fiz">Faço e explico</span></td><td>SQL (views, CTE, COALESCE, NULLIF), Star Schema, PostgreSQL, imputação e regras de qualidade, avaliação de clustering, Python para análise, Git e terminal</td></tr>
+  <tr><td><span class="papel p-dirigi">Dirijo IA e valido</span></td><td>Camada de LLM com validação, roteamento de modelos por custo, Linux na Azure (VM, firewall, systemd), rede privada, revisão de segurança com agentes, coleta de dados públicos por API</td></tr>
+  <tr><td><span class="papel p-est">Estudando agora</span></td><td>Docker, Terraform, CI/CD com GitHub Actions, orquestração de pipelines (Airflow), dbt</td></tr>
+ </table></div>
+ <p class="nota">Próximos 30 dias: recriar a VM do Cérebro com Terraform, empacotar o assistente em Docker e rodar os testes dele no GitHub Actions.</p>
+</section>
+
+<section id="sistema" class="rv">
+ <div class="kicker">Arquitetura</div><h2>Cérebro: um sistema que roda 24 h</h2>
+ <p class="sub">Uso este sistema todo dia. Defini a arquitetura e as regras de segurança e custo, dirigi os agentes na implementação e validei cada parte com testes reais. Passe o mouse nos passos para ver onde cada um acontece.</p>
+ <div class="arch">
+  <div class="zona"><small>Quem usa</small>
+   <div class="node" data-step="1"><b>WhatsApp</b><span>só o meu número dá ordens</span></div>
+   <div class="node"><b>Notebook e celular</b><span>CLI e terminal remoto</span></div>
+   <div class="node dado"><b>GitHub privado</b><span>regras e memória versionadas</span></div>
+  </div>
+  <div class="seta" aria-hidden="true">→</div>
+  <div class="zona"><small>Azure · VM Linux ARM · 2 vCPU, 4 GB</small>
+   <div class="vm">
+    <div class="grupo"><small>Entrada e segurança</small>
+     <div class="node sec"><b>Firewall</b><span>só HTTPS público, SSH fechado</span></div>
+     <div class="node"><b>Proxy com TLS</b><span>Caddy</span></div>
+     <div class="node sec"><b>Segredos</b><span>cofre externo, fora do código</span></div></div>
+    <div class="grupo"><small>Roteamento de IA</small>
+     <div class="node ia" data-step="2"><b>Porteiro</b><span>modelo pequeno classifica</span></div>
+     <div class="node ia"><b>Executores</b><span>sem IA · leve · médio · grande</span></div>
+     <div class="node ia" data-step="3"><b>Confirmação</b><span>irreversível espera "sim"</span></div></div>
+    <div class="grupo"><small>Dados e sync</small>
+     <div class="node dado" data-step="4"><b>Memória</b><span>sincroniza com o Git a cada 2 min</span></div>
+     <div class="node sec"><b>Limites</b><span>30 chamadas/h, alerta de gasto</span></div>
+     <div class="node"><b>Serviços</b><span>systemd, reinício automático</span></div></div>
+   </div>
+  </div>
+  <div class="seta" aria-hidden="true">→</div>
+  <div class="zona"><small>Fora</small>
+   <div class="node ia"><b>3 provedores de IA</b><span>failover com contexto</span></div>
+   <div class="node"><b>Apps</b><span>tarefas, agenda, notas</span></div>
+   <div class="node sec"><b>Rede privada</b><span>administração sem porta aberta</span></div>
   </div>
  </div>
- <div class="zone"><small>Fora</small>
-  <div class="node"><b>Provedores de IA</b><span>3 provedores com failover</span></div>
-  <div class="node"><b>Apps</b><span>tarefas, agenda, notas (APIs)</span></div>
-  <div class="node sec"><b>Rede privada</b><span>Tailscale (WireGuard) para administrar</span></div>
- </div>
-</div>
-<ol class="flow">
- <li>A mensagem chega pelo WhatsApp e só o número autorizado pode dar ordens. Mensagem de outra pessoa é tratada como dado, nunca como comando.</li>
- <li>Um modelo pequeno e barato classifica o pedido. O comando simples roda sem IA; o difícil sobe para o modelo maior. É roteamento por custo.</li>
- <li>Ação irreversível (criar evento com convidado, delegar código) para e pede "sim". Cada resposta mostra o modelo, os tokens e o custo.</li>
- <li>Se um provedor fica sem cota, o próximo assume com o contexto da conversa. O que o sistema aprende vai para a memória versionada no Git.</li>
-</ol>
-<table style="margin-top:24px"><tr><th>Decisão</th><th>Por quê</th></tr>
-<tr><td>Sem SSH público, acesso por rede privada</td><td>Menos superfície de ataque; emergência pelo run-command da Azure</td></tr>
-<tr><td>VM ARM pequena</td><td>Era a opção disponível e mais barata; alerta de gasto mensal</td></tr>
-<tr><td>Modelo pequeno na triagem</td><td>A maior parte dos pedidos não precisa do modelo caro</td></tr>
-<tr><td>Revisão por agentes independentes (infra, segurança, UX)</td><td>A revisão de segurança achou 12 problemas, corrigidos e testados antes de ligar</td></tr></table>
-<p class="honest">Sobre privacidade: mensagem de terceiro é tratada como dado e nunca como ordem, só o número autorizado dá comandos e os segredos ficam fora do código. O que falta, sem enfeite: a infra foi criada pelo <code>az</code> CLI, não por Terraform; não há CI/CD nem alerta de queda; é uma VM só, em uma região; o failover entre provedores foi testado em simulação. Os próximos passos de estudo são exatamente esses.</p>
-</div></section>
+ <div class="cores"><span style="--k:var(--dirigi)">IA</span><span style="--k:var(--est)">segurança e custo</span><span style="--k:var(--fiz)">dados</span></div>
+ <ol class="flow">
+  <li data-step="1">A mensagem chega e só o número autorizado dá ordens. Texto de outra pessoa é dado, nunca comando.</li>
+  <li data-step="2">Um modelo pequeno classifica o pedido. O simples roda sem IA e o difícil sobe para o modelo maior: roteamento por custo.</li>
+  <li data-step="3">Ação irreversível para e pede "sim". Toda resposta mostra o modelo, os tokens e o custo.</li>
+  <li data-step="4">Se um provedor fica sem cota, o próximo assume. O que o sistema aprende vai para a memória versionada.</li>
+ </ol>
+ <details><summary>Decisões e o que ainda falta</summary>
+  <div class="tw"><table><tr><th>Decisão</th><th>Por quê</th></tr>
+  <tr><td>Sem SSH público</td><td>Menos superfície de ataque; emergência pelo run-command da Azure</td></tr>
+  <tr><td>VM ARM pequena</td><td>Era a opção disponível e mais barata, com alerta de gasto mensal</td></tr>
+  <tr><td>Modelo pequeno na triagem</td><td>A maior parte dos pedidos não precisa do modelo caro</td></tr>
+  <tr><td>Revisão por agentes independentes</td><td>A revisão de segurança achou 12 problemas, corrigidos e testados antes de ligar</td></tr></table></div>
+  <p class="nota">O que falta: a infra foi criada pelo <code>az</code> CLI, não por Terraform; não há CI/CD nem alerta de queda; é uma VM só, em uma região; o failover foi testado em simulação. Privacidade: segredos ficam fora do código e nada das mensagens é publicado.</p>
+ </details>
+</section>
 
-<section id="honesto"><div class="wrap">
-<div class="kicker">Sem enfeite</div>
-<h2>O que eu faço, o que eu dirijo e o que estou aprendendo</h2>
-<p class="sub">Uso agentes de IA para ir mais longe do que iria sozinho. Por isso separo o que sei fazer do que dirigi e validei.</p>
-<table>
-<tr><th style="width:24%">Nível</th><th>Itens</th></tr>
-<tr><td><span class="role fiz">Faço e explico</span></td><td>SQL em views (limpeza sem escrita na origem), CTE, COALESCE, NULLIF, Star Schema, PostgreSQL, imputação e regras de qualidade, Power Query e DAX, Python para análise e automação simples, Git e terminal</td></tr>
-<tr><td><span class="role dirigi">Dirijo IA e valido</span></td><td>Linux na Azure (VM, firewall, systemd), rede privada, bot e assistente de WhatsApp, roteamento de modelos por custo, revisão de segurança com agentes, coleta e cruzamento de dados públicos</td></tr>
-<tr><td><span class="role ideia">Estudando agora</span></td><td>Docker, Terraform (recriar a VM em código), CI/CD com GitHub Actions, orquestração de pipelines (Airflow), Python mais avançado</td></tr>
-</table>
-<p class="honest">Plano dos próximos 30 dias: 1 - recriar a VM do Cérebro com Terraform; 2 - empacotar o assistente em Docker; 3 - rodar os testes dele no GitHub Actions.</p>
-</div></section>
-
-<section id="contato"><div class="wrap">
-<div class="kicker">Contato</div><h2>Vamos conversar</h2>
-<p class="sub">Procuro estágio ou vaga júnior em engenharia de dados, com IA aplicada. Estou estudando Docker, Terraform e orquestração de pipelines agora.</p>
-<a class="btn p" href="mailto:galicianie@gmail.com">galicianie@gmail.com</a><a class="btn" href="https://www.linkedin.com/in/eduardobrame/">LinkedIn</a><a class="btn" href="https://medium.com/@galicianie/">Medium</a><a class="btn" href="https://github.com/EduardoBrame">GitHub</a><a class="btn" href="https://sites.google.com/view/portfolio-eduardo-brame/home">Dashboards (portfólio antigo)</a>
-</div></section>
-<footer><div class="wrap">Eduardo Bramé · Londrina-PR · 2026. HTML e CSS puros, sem framework, publicado no GitHub Pages. Feito com agentes de IA sob a minha direção, e é assim que trabalho.</div></footer>
+<section id="contato" class="contato rv">
+ <div class="kicker">Contato</div><h2>Vamos conversar</h2>
+ <p class="sub" style="margin:0 auto">Procuro estágio ou vaga júnior em IA aplicada, com base em dados.</p>
+ <div class="ctas"><a class="btn" href="mailto:galicianie@gmail.com">galicianie@gmail.com</a><a href="https://www.linkedin.com/in/eduardobrame/">LinkedIn</a><a href="https://github.com/EduardoBrame">GitHub</a><a href="https://medium.com/@galicianie/">Medium</a><a href="https://sites.google.com/view/portfolio-eduardo-brame/home">Dashboards antigos</a></div>
+</section>
+</main>
+<footer><div class="wrap">Eduardo Bramé · Londrina-PR · 2026 · HTML e CSS puros no GitHub Pages, feito com agentes de IA sob a minha direção.</div></footer>
+<script>
+document.getElementById('tema').onclick=function(){var r=document.documentElement,n=r.dataset.theme==='light'?'dark':'light';r.dataset.theme=n;try{localStorage.setItem('tema',n)}catch(e){}};
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&'IntersectionObserver'in window){var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');o.unobserve(e.target)}})},{threshold:.15});document.querySelectorAll('.rv').forEach(function(el){o.observe(el)})}else{document.querySelectorAll('.rv').forEach(function(el){el.classList.add('on')})}
+</script>
 </body></html>
