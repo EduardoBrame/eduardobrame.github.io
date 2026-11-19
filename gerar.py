@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Gera projetos/*.html a partir dos dados abaixo. Rode: python3 gerar.py"""
 import re, html
-V = "8"  # versão do CSS: suba a cada mudança para furar o cache do navegador
+V = "9"  # versão do CSS: suba a cada mudança para furar o cache do navegador
 idx = open("index.html").read()
 ARQ = re.search(r'(<div class="arch">.*?</ol>)', idx, re.S).group(1)
 

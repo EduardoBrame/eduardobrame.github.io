@@ -136,3 +136,9 @@ figure{margin:0}figcaption{font-size:14px;color:var(--mut);padding:10px 14px;bor
 .provas a:hover{border-top-color:var(--fiz)}
 .provas small{display:block;font-size:12px;font-weight:500;color:var(--fiz);margin-bottom:4px}
 .provas a b{display:block;font-size:24px;line-height:1.2;font-weight:600;color:var(--txt);letter-spacing:-.02em}
+/* v9: conferência final UX */
+.nums{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;column-gap:28px;row-gap:12px}
+.capa img{max-height:none;max-width:900px;margin:0 auto;object-fit:contain}
+.gal figure:only-child{grid-column:1/-1;max-width:760px}
+.thumb img[src*=cerebro]{object-fit:contain;background:var(--bg)}
+@media (max-width:640px){nav .wrap>a[href="#projetos"]{display:inline}}
