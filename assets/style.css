@@ -131,3 +131,8 @@ figure{margin:0}figcaption{font-size:14px;color:var(--mut);padding:10px 14px;bor
 .hero{padding:48px 0 24px}.provas{padding-bottom:16px}section{padding-top:64px}
 .papel,.cat{font-family:inherit;letter-spacing:0}.cat{text-transform:none;font-size:13px}
 .card{border-left:1px solid var(--line)}.card:hover{border-left-color:color-mix(in srgb,var(--c) 40%,var(--line))}
+/* v7: destaques presos ao projeto */
+.provas a{display:block;border-top:1px solid var(--line);padding-top:14px;font-size:14px;color:var(--mut);text-decoration:none;transition:border-color .15s}
+.provas a:hover{border-top-color:var(--fiz)}
+.provas small{display:block;font-size:12px;font-weight:500;color:var(--fiz);margin-bottom:4px}
+.provas a b{display:block;font-size:24px;line-height:1.2;font-weight:600;color:var(--txt);letter-spacing:-.02em}
