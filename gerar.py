@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Gera projetos/*.html a partir dos dados abaixo. Rode: python3 gerar.py"""
 import re, html
-V = "7"  # versão do CSS: suba a cada mudança para furar o cache do navegador
+V = "8"  # versão do CSS: suba a cada mudança para furar o cache do navegador
 idx = open("index.html").read()
 ARQ = re.search(r'(<div class="arch">.*?</ol>)', idx, re.S).group(1)
 
 P = [
  dict(slug="raio-x", nome="Raio-X Comercial", papel="dirigi", cat="ML + LLM · projeto de time (4 pessoas)",
   frase="Prepara a primeira reunião de um vendedor B2B com uma grande empresa, em minutos, usando só dado público. O LLM escreve o texto, mas não pode escrever nenhum número.",
-  nums=[("595","empresas da CVM"),("384 mil","linhas contábeis"),("k = 4","silhueta corrigida"),("US$ 0,0008","por relatório")],
+  nums=[("595","empresas da CVM"),("384 mil","linhas contábeis"),("k = 4","grupos úteis (silhueta 0,29)"),("US$ 0,0008","por relatório")],
   capa=("raiox-thumb.jpg","Tela de teste, com empresas e números inventados: indicadores da empresa comparados com o grupo de empresas parecidas."),
   galeria=[("raiox-tela.jpg","A tela completa: resumo, perguntas para a reunião e empresas parecidas para prospectar. Todo número vem do dado; o texto vem do LLM.","")],
   links=[],
@@ -17,12 +17,12 @@ P = [
    ("Dados","<ul><li>DFP da CVM (demonstrações financeiras padronizadas, dado aberto), de 2023 a 2025.</li><li>595 empresas e 384.591 linhas de contas, carregadas e modeladas em PostgreSQL.</li><li>Indicadores derivados: receita, crescimento em dois anos, margem EBIT, margem líquida, endividamento e ativo.</li></ul>"),
    ("Como funciona","<ol><li>O usuário escolhe a empresa e descreve o que vende.</li><li>O sistema calcula os indicadores e compara com o grupo de empresas parecidas.</li><li>O k-means define o grupo; os 5 vizinhos mais próximos viram sugestão de prospecção.</li><li>O LLM escreve o resumo e as perguntas para a reunião com <b>marcadores no lugar dos números</b>.</li><li>Um validador confere a saída e o código troca cada marcador pelo valor real. Se o texto citar um número que não veio do dado, ele é barrado.</li></ol>"),
    ("Decisão que mais importou","<p>A primeira clusterização deu silhueta de <b>0,77</b>, que parece ótima. Olhando os grupos, 567 das 595 empresas caíam num grupo só: a métrica estava boa e o resultado era inútil. Troquei para <b>k = 4</b>, com silhueta de 0,29 e grupos que fazem sentido de negócio. A lição: métrica sem olhar o dado engana.</p>"),
-   ("Custo e qualidade","<ul><li>Cerca de US$ 0,0008 por relatório, com um modelo leve e saída estruturada.</li><li>259 testes automatizados no projeto do time.</li><li>Interface em Streamlit; entrega com Docker.</li></ul>"),
+   ("Custo e qualidade","<ul><li>Cerca de US$ 0,0008 por relatório, com um modelo leve e saída estruturada.</li><li>259 testes automatizados no projeto do time, incluindo os do validador (remove dígitos soltos, troca marcadores, barra perguntas com base inválida).</li><li>Os itens que o validador remove ficam visíveis em \"Detalhes técnicos\", para o usuário ver o que foi barrado.</li><li>Interface em Streamlit. A entrega em Docker e a infraestrutura foram feitas por um colega do time.</li></ul>"),
   ],
   fiz="Defini a regra de que o LLM não escreve número e o desenho do validador; escolhi e corrigi o k; desenhei a avaliação e a tela inicial; coordenei a minha parte.",
   dirigi="O código do ML, da camada de IA e do validador foi escrito com Claude Code sob a minha direção, revisado e testado por mim.",
   falta="Repositório privado do time (não posso abrir o código). Os pesos de comparação ainda não foram validados com vendedores reais.",
-  tags=["Python","pandas","PostgreSQL","scikit-learn","LangChain","Streamlit","Docker"]),
+  tags=["Python","pandas","PostgreSQL","scikit-learn","LangChain","Streamlit"]),
  dict(slug="bike-store", nome="Bike Store: do caos no banco ao modelo estrela", papel="fiz", cat="SQL e modelagem",
   frase="Uma base de vendas com encoding corrompido, hierarquia com NULL e \"n/a\" contando como dado. Sem permissão de escrita, limpei tudo em views SQL, sem tocar na origem.",
   nums=[("~60 mil","linhas de vendas"),("18,4 mil","clientes"),("4","problemas silenciosos"),("95%","do lucro em bikes")],
@@ -40,7 +40,7 @@ P = [
   falta="Próximo passo de estudo: transformar as views em modelos dbt com testes (not_null, unique, relationships) e carga incremental.",
   tags=["PostgreSQL","SQL","Star Schema","DAX","Power BI"]),
  dict(slug="arvore-segura", nome="Árvore Segura Londrina", papel="dirigi", cat="Ingestão de dados públicos e geo",
-  frase="Diz à Defesa Civil quais árvores de rua vistoriar primeiro, cruzando o inventário público da prefeitura com previsão de vento e fiação.",
+  frase="Sugere à Defesa Civil quais árvores de rua vistoriar primeiro, cruzando o inventário público da prefeitura com previsão de vento e fiação.",
   nums=[("41 mil","registros coletados"),("28,7 mil","árvores avaliadas"),("2.197","risco alto"),("415","mortas em pé")],
   capa=("arvore-mapa.jpg","O mapa funciona offline: indicadores, alerta de vento do dia, filtro por bairro e a fila de vistoria ordenada pela nota."),
   links=[("Abrir o mapa ao vivo","../demos/arvore-segura.html")],
@@ -51,11 +51,11 @@ P = [
    ("Como eu levaria para produção","<ol><li>Transformar o script numa DAG agendada (Airflow ou similar).</li><li>Retry com backoff e checkpoint do último offset, para retomar se a API cair no meio.</li><li>Chave única por árvore, para a carga ser idempotente e incremental.</li><li>Checagem de contagem e de nulos a cada execução, com alerta se a fonte mudar.</li></ol>"),
   ],
   fiz="Defini o problema, as regras de descarte e a fórmula da nota, e conferi os números.", dirigi="Os scripts de coleta, a nota e o mapa foram escritos com Claude Code sob a minha direção.",
-  falta="Os pesos da nota não foram calibrados com um técnico e o inventário é de 2018, com 18 bairros. É um protótipo de hackathon.",
+  falta="Os pesos da nota não foram calibrados com um técnico e o inventário é de 2018, com 18 bairros. É um protótipo feito para o SmartCities Hackathon Londrina, e o mapa dele entrou no briefing da DRINA.",
   tags=["Python","pandas","shapely","ArcGIS REST","Open-Meteo"]),
  dict(slug="cerebro", nome="Cérebro: assistente 24 h na Azure", papel="dirigi", cat="Infra, agentes e custo",
   frase="Um assistente no WhatsApp que escolhe o modelo de IA pela dificuldade do pedido, usa as minhas ferramentas e pede confirmação antes de qualquer ação irreversível. Roda numa VM Linux sem porta de administração aberta.",
-  nums=[("4","níveis de modelo"),("3","provedores com failover"),("12","achados de segurança corrigidos"),("2 min","sync da memória")],
+  nums=[("4","rotas, do comando sem IA ao modelo grande"),("3","provedores de IA em sequência"),("12","achados de segurança corrigidos"),("2 min","sync da memória")],
   capa=None, links=[],
   blocos=[
    ("Arquitetura", "FULL"),
@@ -67,12 +67,12 @@ P = [
   tags=["Azure","Linux","systemd","Caddy","Tailscale","Python","Git"]),
  dict(slug="varejo", nome="Varejo: uma regra explícita para cada sujeira", papel="fiz", cat="ETL e qualidade de dados",
   frase="12.575 transações com preço nulo, linhas fantasmas e produtos sem nome. Cada caso virou uma regra explícita antes de modelar.",
-  nums=[("12.575","transações"),("628","linhas salvas"),("600+","nomes recuperados"),("604","fantasmas fora")],
+  nums=[("12.575","transações"),("628","linhas salvas"),("609","nomes recuperados"),("604","fantasmas fora")],
   capa=("varejo-merge.jpg","Recuperação de nomes: merge por chave composta (categoria + preço) contra uma \"tabela da verdade\" de pares únicos. 609 de 609 linhas casaram."),
   links=[("Artigos no Medium","https://medium.com/@galicianie/")],
   blocos=[
    ("Os 4 problemas","<ol><li><b>Preço nulo (5%):</b> imputado por total ÷ quantidade, o valor exato da própria linha. 628 linhas preservadas.</li><li><b>Linhas fantasmas:</b> 604 registros só com preço, sem quantidade nem total. Excluídos para não distorcer o ticket médio.</li><li><b>Produto sem nome:</b> categoria + preço identificavam o item de forma única; virou chave composta para recuperar mais de 600 nomes.</li><li><b>Data solta:</b> calendário dimensional completo, necessário para comparação entre períodos.</li></ol>"),
-   ("Estatística","<p>Outliers saíram do cálculo do ticket médio com μ±2σ, cerca de 5% das transações. Testei ±3σ antes: cobria 100% dos dados e não mudava nada.</p>"),
+   ("Estatística","<p>Para o ticket médio não ser puxado pelos extremos, tirei do cálculo as transações fora de μ±2σ (cerca de 5%, as duas caudas). É uma escolha de robustez, não uma afirmação de que eram erros: o volume total continua com todas. Testei ±3σ antes e ele não mudava nada.</p>"),
   ],
   galeria=[("varejo-modelo.jpg","Do arquivo plano ao modelo estrela: staging desligada da carga, fato de vendas e dimensões de itens e calendário.","")],
   fiz="Todo o ETL, a modelagem e a análise.", dirigi="",
@@ -104,9 +104,11 @@ FOOT = '''</main><footer><div class="wrap">Eduardo Bramé · Londrina-PR · 2026
 <script>document.getElementById('tema').onclick=function(){var r=document.documentElement,n=r.dataset.theme==='light'?'dark':'light';r.dataset.theme=n;try{localStorage.setItem('tema',n)}catch(e){}};</script></body></html>'''
 ROT = {"fiz":("p-fiz","Fiz"),"dirigi":("p-dirigi","Dirigi IA e validei")}
 
+ORD=["raio-x","bike-store","arvore-segura","cerebro","drina","varejo"]
+P.sort(key=lambda p: ORD.index(p["slug"]))
 for i,p in enumerate(P):
     cls,lab = ROT[p["papel"]]
-    og = (p["capa"] or ("arvore-thumb.jpg",))[0]
+    og = (p["capa"] or ("cerebro-thumb.jpg",))[0]
     o = [HEAD.format(t=p["nome"], d=html.escape(p["frase"]), og=og, v=V)]
     o.append(f'<a class="crumb" href="../#projetos">← Todos os projetos</a><header class="phero card {p["papel"]}" style="background:none;border:0;box-shadow:none;padding-left:0;padding-right:0"><span class="papel {cls}">{lab}</span><span class="cat">{p["cat"]}</span><h1>{p["nome"]}</h1><p class="lead">{p["frase"]}</p>')
     o.append('<div class="nums">'+"".join(f'<div><b>{a}</b>{b}</div>' for a,b in p["nums"])+'</div>')

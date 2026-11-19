@@ -6,7 +6,7 @@
 <script>try{var t=localStorage.getItem('tema');if(t)document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=7"></head><body>
+<link rel="stylesheet" href="assets/style.css?v=8"></head><body>
 <a class="skip" href="#projetos">Pular para projetos</a>
 <nav><div class="wrap"><a class="me" href="#">Eduardo Bramé</a><a href="#projetos">Projetos</a><a href="#sobre">Sobre</a><a href="#sistema">Arquitetura</a><a class="ct" href="#contato">Contato</a><button id="tema" aria-label="Alternar tema claro/escuro">◐</button></div></nav>
 
@@ -38,7 +38,7 @@
    <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">ML + LLM · time de 4</span>
    <h3><a href="projetos/raio-x.html">Raio-X Comercial</a></h3>
    <p class="res">Prepara a primeira reunião de um vendedor B2B com uma grande empresa: lê os balanços públicos, acha o perfil e as empresas parecidas e escreve o briefing. O LLM escreve o texto, mas não pode escrever nenhum número.</p>
-   <div class="nums"><div><b>595</b>empresas</div><div><b>384 mil</b>linhas</div><div><b>k = 4</b>silhueta corrigida</div></div>
+   <div class="nums"><div><b>595</b>empresas</div><div><b>384 mil</b>linhas</div><div><b>k = 4</b>grupos úteis</div></div>
    <div class="chain" aria-label="Pipeline do Raio-X"><span>CVM</span><i>→</i><span>PostgreSQL</span><i>→</i><span>K-means</span><i>→</i><span class="ia">LLM + marcadores</span><i>→</i><span class="ok">Validador</span></div>
    <div class="tags"><span class="tag">Python</span><span class="tag">PostgreSQL</span><span class="tag">scikit-learn</span><span class="tag">LangChain</span></div>
    <a class="mais" href="projetos/raio-x.html">Ver o projeto completo →</a>
@@ -47,51 +47,36 @@
   <div><a class="thumb" href="projetos/raio-x.html"><img src="assets/img/raiox-thumb.jpg" alt="Tela de teste do Raio-X Comercial" loading="lazy"></a>
    </div>
  </article>
-
  <article class="card fiz rv">
   <a class="thumb" href="projetos/bike-store.html" tabindex="-1" aria-hidden="true"><img src="assets/img/bike-modelo.jpg" alt="" loading="lazy"></a>
   <span class="papel p-fiz">Fiz</span><span class="cat">SQL e modelagem</span>
   <h3><a href="projetos/bike-store.html">Bike Store: do caos no banco ao modelo estrela</a></h3>
   <p class="res">Encoding corrompido, NULL na hierarquia e "n/a" contando como dado. Sem permissão de escrita, limpei tudo em views SQL, sem tocar na origem.</p>
-  <div class="nums"><div><b>~60 mil</b>vendas</div><div><b>18,4 mil</b>clientes</div><div><b>95%</b>do lucro em bikes</div></div>
+  <div class="nums"><div><b>~60 mil</b>linhas de venda</div><div><b>18,4 mil</b>clientes</div><div><b>95%</b>do lucro em bikes</div></div>
   <div class="tags"><span class="tag">PostgreSQL</span><span class="tag">SQL</span><span class="tag">Star Schema</span></div>
   <a class="mais" href="projetos/bike-store.html">Ver o projeto completo →</a>
   
  </article>
-
  <article class="card dirigi rv">
   <a class="thumb" href="projetos/arvore-segura.html" tabindex="-1" aria-hidden="true"><img src="assets/img/arvore-thumb.jpg" alt="" loading="lazy"></a>
   <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">Ingestão e geo</span>
   <h3><a href="projetos/arvore-segura.html">Árvore Segura Londrina</a></h3>
-  <p class="res">Diz à Defesa Civil quais árvores de rua vistoriar primeiro, cruzando o inventário público da prefeitura com vento e fiação.</p>
+  <p class="res">Sugere à Defesa Civil quais árvores de rua vistoriar primeiro, cruzando o inventário público da prefeitura com vento e fiação.</p>
   <div class="nums"><div><b>41 mil</b>registros</div><div><b>28,7 mil</b>árvores avaliadas</div><div><b>2.197</b>risco alto</div></div>
   <div class="tags"><span class="tag">Python</span><span class="tag">pandas</span><span class="tag">ArcGIS REST</span><span class="tag">shapely</span></div>
   <a class="mais" href="projetos/arvore-segura.html">Ver o projeto completo →</a>
   
  </article>
-
  <article class="card dirigi rv">
   <a class="thumb" href="projetos/cerebro.html" tabindex="-1" aria-hidden="true"><img src="assets/img/cerebro-thumb.jpg" alt="" loading="lazy"></a>
   <span class="papel p-dirigi">Dirigi IA e validei</span><span class="cat">Infra e agentes</span>
   <h3><a href="projetos/cerebro.html">Cérebro: assistente 24 h na Azure</a></h3>
   <p class="res">Um assistente no WhatsApp que escolhe o modelo pela dificuldade do pedido, usa as minhas ferramentas e pede confirmação antes de qualquer ação irreversível.</p>
-  <div class="nums"><div><b>4</b>níveis de modelo</div><div><b>3</b>provedores com failover</div><div><b>12</b>achados de segurança corrigidos</div></div>
+  <div class="nums"><div><b>4</b>rotas, do comando sem IA ao modelo grande</div><div><b>3</b>provedores de IA em sequência</div><div><b>12</b>achados de segurança corrigidos</div></div>
   <div class="tags"><span class="tag">Azure</span><span class="tag">Linux</span><span class="tag">systemd</span><span class="tag">Python</span></div>
   <a class="mais" href="projetos/cerebro.html">Ver o projeto completo →</a>
   
  </article>
-
- <article class="card fiz rv">
-  <a class="thumb" href="projetos/varejo.html" tabindex="-1" aria-hidden="true"><img src="assets/img/varejo-merge.jpg" alt="" loading="lazy"></a>
-  <span class="papel p-fiz">Fiz</span><span class="cat">ETL e qualidade</span>
-  <h3><a href="projetos/varejo.html">Varejo: regra explícita para cada sujeira</a></h3>
-  <p class="res">Preço nulo, linhas fantasmas e produtos sem nome: cada caso tratado com uma regra explícita antes de modelar.</p>
-  <div class="nums"><div><b>628</b>linhas salvas</div><div><b>600+</b>nomes recuperados</div><div><b>604</b>fantasmas fora</div></div>
-  <div class="tags"><span class="tag">ETL</span><span class="tag">Star Schema</span><span class="tag">estatística</span></div>
-  <a class="mais" href="projetos/varejo.html">Ver o projeto completo →</a>
-  
- </article>
-
  <article class="card fiz rv">
   <a class="thumb" href="projetos/drina.html" tabindex="-1" aria-hidden="true"><img src="assets/img/drina-produto.jpg" alt="" loading="lazy"></a>
   <span class="papel p-fiz">Fiz</span><span class="cat">Produto e pitch · time de 5</span>
@@ -100,6 +85,16 @@
   <div class="nums"><div><b>3º</b>lugar</div><div><b>13/20</b>acertos do classificador por regras</div></div>
   <div class="tags"><span class="tag">produto</span><span class="tag">privacidade</span><span class="tag">classificação</span></div>
   <a class="mais" href="projetos/drina.html">Ver o projeto completo →</a>
+  
+ </article>
+ <article class="card fiz rv">
+  <a class="thumb" href="projetos/varejo.html" tabindex="-1" aria-hidden="true"><img src="assets/img/varejo-merge.jpg" alt="" loading="lazy"></a>
+  <span class="papel p-fiz">Fiz</span><span class="cat">ETL e qualidade</span>
+  <h3><a href="projetos/varejo.html">Varejo: regra explícita para cada sujeira</a></h3>
+  <p class="res">Preço nulo, linhas fantasmas e produtos sem nome: cada caso tratado com uma regra explícita antes de modelar.</p>
+  <div class="nums"><div><b>628</b>linhas salvas</div><div><b>609</b>nomes recuperados</div><div><b>604</b>fantasmas fora</div></div>
+  <div class="tags"><span class="tag">ETL</span><span class="tag">Star Schema</span><span class="tag">estatística</span></div>
+  <a class="mais" href="projetos/varejo.html">Ver o projeto completo →</a>
   
  </article>
  </div>
@@ -172,7 +167,7 @@
 </section>
 
 <section id="contato" class="contato rv">
- <div class="kicker">Contato</div><h2>Vamos conversar</h2>
+ <div class="kicker">Contato</div><h2>Para trocar ideia sobre dados e IA</h2>
  <p class="sub" style="margin:0 auto">Gosto de conversar sobre dados, IA aplicada e como transformar os dois em produto.</p>
  <div class="ctas"><a class="btn" href="mailto:galicianie@gmail.com">galicianie@gmail.com</a><a href="https://www.linkedin.com/in/eduardobrame/">LinkedIn</a><a href="https://github.com/EduardoBrame">GitHub</a><a href="https://medium.com/@galicianie/">Medium</a><a href="https://sites.google.com/view/portfolio-eduardo-brame/home">Dashboards antigos</a></div>
 </section>
